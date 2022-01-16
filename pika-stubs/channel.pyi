@@ -111,7 +111,7 @@ class Channel:
         self,
         exchange: str,
         routing_key: str,
-        body: bytes,
+        body: bytes | str,
         properties: Optional[spec.BasicProperties] = ...,
         mandatory: bool = ...,
     ) -> None: ...
