@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import types
-from typing import Any, Callable, List, Mapping, Optional, Tuple, Type
+from typing import Any, Callable, Iterator, List, Mapping, Optional, Tuple, Type, Union
 
 from .. import channel, connection, frame, spec
 
@@ -147,7 +147,20 @@ class BlockingChannel:
         exclusive: bool = ...,
         arguments: Optional[Mapping[str, Any]] = ...,
         inactivity_timeout: Optional[float] = ...,
-    ) -> None: ...
+    ) -> Iterator[
+        Union[
+            Tuple[
+                spec.Basic.Deliver,
+                spec.BasicProperties,
+                bytes,
+            ],
+            Tuple[
+                None,
+                None,
+                None,
+            ],
+        ]
+    ]: ...
 
     def get_waiting_message_count(self) -> int: ...
 
