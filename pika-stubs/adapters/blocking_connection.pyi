@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import types
-from typing import Any, Callable, Iterator, List, Mapping, Optional, Tuple, Type
+from typing import Any, Callable, Iterator, List, Mapping, Optional, Tuple, Type, Union
 
 from .. import channel, connection, frame, spec
 
@@ -148,10 +148,17 @@ class BlockingChannel:
         arguments: Optional[Mapping[str, Any]] = ...,
         inactivity_timeout: Optional[float] = ...,
     ) -> Iterator[
-        Tuple[
-            Optional[spec.Basic.Deliver],
-            Optional[spec.BasicProperties],
-            Optional[bytes],
+        Union[
+            Tuple[
+                spec.Basic.Deliver,
+                spec.BasicProperties,
+                bytes,
+            ],
+            Tuple[
+                None,
+                None,
+                None,
+            ],
         ]
     ]: ...
 
