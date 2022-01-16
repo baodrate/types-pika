@@ -2,53 +2,55 @@ from __future__ import annotations
 
 from typing import Any, List, Mapping, Optional, Type
 
+from typing_extensions import Literal
+
 from . import amqp_object
 from .exchange_type import ExchangeType
 
 PROTOCOL_VERSION: Any
 PORT: int
 
-ACCESS_REFUSED: int
-CHANNEL_ERROR: int
-COMMAND_INVALID: int
-CONNECTION_FORCED: int
-CONTENT_TOO_LARGE: int
-FRAME_BODY: int
-FRAME_END: int
-FRAME_END_SIZE: int
-FRAME_ERROR: int
-FRAME_HEADER: int
-FRAME_HEADER_SIZE: int
-FRAME_HEARTBEAT: int
-FRAME_MAX_SIZE: int
-FRAME_METHOD: int
-FRAME_MIN_SIZE: int
-INTERNAL_ERROR: int
-INVALID_PATH: int
-NOT_ALLOWED: int
-NOT_FOUND: int
-NOT_IMPLEMENTED: int
-NO_CONSUMERS: int
-NO_ROUTE: int
-PERSISTENT_DELIVERY_MODE: int
-PRECONDITION_FAILED: int
-REPLY_SUCCESS: int
-RESOURCE_ERROR: int
-RESOURCE_LOCKED: int
-SYNTAX_ERROR: int
-TRANSIENT_DELIVERY_MODE: int
-UNEXPECTED_FRAME: int
+ACCESS_REFUSED: Literal[403]
+CHANNEL_ERROR: Literal[504]
+COMMAND_INVALID: Literal[503]
+CONNECTION_FORCED: Literal[320]
+CONTENT_TOO_LARGE: Literal[311]
+FRAME_BODY: Literal[3]
+FRAME_END: Literal[206]
+FRAME_END_SIZE: Literal[1]
+FRAME_ERROR: Literal[501]
+FRAME_HEADER: Literal[2]
+FRAME_HEADER_SIZE: Literal[7]
+FRAME_HEARTBEAT: Literal[8]
+FRAME_MAX_SIZE: Literal[131072]
+FRAME_METHOD: Literal[1]
+FRAME_MIN_SIZE: Literal[4096]
+INTERNAL_ERROR: Literal[541]
+INVALID_PATH: Literal[402]
+NOT_ALLOWED: Literal[530]
+NOT_FOUND: Literal[404]
+NOT_IMPLEMENTED: Literal[540]
+NO_CONSUMERS: Literal[313]
+NO_ROUTE: Literal[312]
+PERSISTENT_DELIVERY_MODE: Literal[2]
+PRECONDITION_FAILED: Literal[406]
+REPLY_SUCCESS: Literal[200]
+RESOURCE_ERROR: Literal[506]
+RESOURCE_LOCKED: Literal[405]
+SYNTAX_ERROR: Literal[502]
+TRANSIENT_DELIVERY_MODE: Literal[1]
+UNEXPECTED_FRAME: Literal[505]
 
 
 class Connection(amqp_object.Class):
 
-    INDEX: int = ...
-    NAME: str = ...
+    INDEX: Literal[0x000A]
+    NAME: Literal['Connection']
 
     class Start(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x000A000A]
+        NAME: Literal['Connection.Start']
 
         version_major: int = ...
         version_minor: int = ...
@@ -73,8 +75,8 @@ class Connection(amqp_object.Class):
 
     class StartOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x000A000B]
+        NAME: Literal['Connection.StartOk']
 
         client_properties: Optional[Mapping[str, Any]] = ...
         mechanism: str = ...
@@ -97,8 +99,8 @@ class Connection(amqp_object.Class):
 
     class Secure(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x000A0014]
+        NAME: Literal['Connection.Secure']
 
         challenge: Optional[str] = ...
 
@@ -112,8 +114,8 @@ class Connection(amqp_object.Class):
 
     class SecureOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x000A0015]
+        NAME: Literal['Connection.SecureOk']
 
         response: Optional[str] = ...
 
@@ -127,8 +129,8 @@ class Connection(amqp_object.Class):
 
     class Tune(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x000A001E]
+        NAME: Literal['Connection.Tune']
 
         channel_max: int = ...
         frame_max: int = ...
@@ -144,8 +146,8 @@ class Connection(amqp_object.Class):
 
     class TuneOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x000A001F]
+        NAME: Literal['Connection.TuneOk']
 
         channel_max: int = ...
         frame_max: int = ...
@@ -166,8 +168,8 @@ class Connection(amqp_object.Class):
 
     class Open(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x000A0028]
+        NAME: Literal['Connection.Open']
 
         virtual_host: str = ...
         capabilities: str = ...
@@ -188,8 +190,8 @@ class Connection(amqp_object.Class):
 
     class OpenOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x000A0029]
+        NAME: Literal['Connection.OpenOk']
 
         known_hosts: str = ...
 
@@ -203,8 +205,8 @@ class Connection(amqp_object.Class):
 
     class Close(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x000A0032]
+        NAME: Literal['Connection.Close']
 
         reply_code: Optional[int] = ...
         reply_text: str = ...
@@ -227,8 +229,8 @@ class Connection(amqp_object.Class):
 
     class CloseOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x000A0033]
+        NAME: Literal['Connection.CloseOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -238,8 +240,8 @@ class Connection(amqp_object.Class):
 
     class Blocked(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x000A003C]
+        NAME: Literal['Connection.Blocked']
 
         reason: str = ...
 
@@ -253,8 +255,8 @@ class Connection(amqp_object.Class):
 
     class Unblocked(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x000A003D]
+        NAME: Literal['Connection.Unblocked']
 
         @property
         def synchronous(self) -> bool: ...
@@ -265,13 +267,13 @@ class Connection(amqp_object.Class):
 
 class Channel(amqp_object.Class):
 
-    INDEX: int = ...
-    NAME: str = ...
+    INDEX: Literal[0x0014]
+    NAME: Literal['Channel']
 
     class Open(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x0014000A]
+        NAME: Literal['Channel.Open']
 
         out_of_band: str = ...
 
@@ -285,8 +287,8 @@ class Channel(amqp_object.Class):
 
     class OpenOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x0014000B]
+        NAME: Literal['Channel.OpenOk']
 
         channel_id: str = ...
 
@@ -300,8 +302,8 @@ class Channel(amqp_object.Class):
 
     class Flow(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00140014]
+        NAME: Literal['Channel.Flow']
 
         active: Optional[bool] = ...
 
@@ -315,8 +317,8 @@ class Channel(amqp_object.Class):
 
     class FlowOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00140015]
+        NAME: Literal['Channel.FlowOk']
 
         active: Optional[bool] = ...
 
@@ -330,8 +332,8 @@ class Channel(amqp_object.Class):
 
     class Close(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00140028]
+        NAME: Literal['Channel.Close']
 
         reply_code: Optional[int] = ...
         reply_text: str = ...
@@ -354,8 +356,8 @@ class Channel(amqp_object.Class):
 
     class CloseOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00140029]
+        NAME: Literal['Channel.CloseOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -366,13 +368,13 @@ class Channel(amqp_object.Class):
 
 class Access(amqp_object.Class):
 
-    INDEX: int = ...
-    NAME: str = ...
+    INDEX: Literal[0x001E]
+    NAME: Literal['Access']
 
     class Request(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x001E000A]
+        NAME: Literal['Access.Request']
 
         realm: str = ...
         exclusive: bool = ...
@@ -399,8 +401,8 @@ class Access(amqp_object.Class):
 
     class RequestOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x001E000B]
+        NAME: Literal['Access.RequestOk']
 
         ticket: int = ...
 
@@ -415,13 +417,13 @@ class Access(amqp_object.Class):
 
 class Exchange(amqp_object.Class):
 
-    INDEX: int = ...
-    NAME: str = ...
+    INDEX: Literal[0x0028]
+    NAME: Literal['Exchange']
 
     class Declare(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x0028000A]
+        NAME: Literal['Exchange.Declare']
 
         ticket: int = ...
         exchange: Optional[str] = ...
@@ -454,8 +456,8 @@ class Exchange(amqp_object.Class):
 
     class DeclareOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x0028000B]
+        NAME: Literal['Exchange.DeclareOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -465,8 +467,8 @@ class Exchange(amqp_object.Class):
 
     class Delete(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00280014]
+        NAME: Literal['Exchange.Delete']
 
         ticket: int = ...
         exchange: Optional[str] = ...
@@ -489,8 +491,8 @@ class Exchange(amqp_object.Class):
 
     class DeleteOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00280015]
+        NAME: Literal['Exchange.DeleteOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -500,8 +502,8 @@ class Exchange(amqp_object.Class):
 
     class Bind(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x0028001E]
+        NAME: Literal['Exchange.Bind']
 
         ticket: int = ...
         destination: Optional[str] = ...
@@ -528,8 +530,8 @@ class Exchange(amqp_object.Class):
 
     class BindOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x0028001F]
+        NAME: Literal['Exchange.BindOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -539,8 +541,8 @@ class Exchange(amqp_object.Class):
 
     class Unbind(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00280028]
+        NAME: Literal['Exchange.Unbind']
 
         ticket: int = ...
         destination: Optional[str] = ...
@@ -567,8 +569,8 @@ class Exchange(amqp_object.Class):
 
     class UnbindOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00280033]
+        NAME: Literal['Exchange.UnbindOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -579,13 +581,13 @@ class Exchange(amqp_object.Class):
 
 class Queue(amqp_object.Class):
 
-    INDEX: int = ...
-    NAME: str = ...
+    INDEX: Literal[0x0032]
+    NAME: Literal['Queue']
 
     class Declare(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x0032000A]
+        NAME: Literal['Queue.Declare']
 
         ticket: int = ...
         queue: str = ...
@@ -616,8 +618,8 @@ class Queue(amqp_object.Class):
 
     class DeclareOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x0032000B]
+        NAME: Literal['Queue.DeclareOk']
 
         queue: Optional[str] = ...
         message_count: Optional[int] = ...
@@ -638,8 +640,8 @@ class Queue(amqp_object.Class):
 
     class Bind(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00320014]
+        NAME: Literal['Queue.Bind']
 
         ticket: int = ...
         queue: str = ...
@@ -666,8 +668,8 @@ class Queue(amqp_object.Class):
 
     class BindOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00320015]
+        NAME: Literal['Queue.BindOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -677,8 +679,8 @@ class Queue(amqp_object.Class):
 
     class Purge(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x0032001E]
+        NAME: Literal['Queue.Purge']
 
         ticket: int = ...
         queue: str = ...
@@ -699,8 +701,8 @@ class Queue(amqp_object.Class):
 
     class PurgeOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x0032001F]
+        NAME: Literal['Queue.PurgeOk']
 
         message_count: Optional[int] = ...
 
@@ -714,8 +716,8 @@ class Queue(amqp_object.Class):
 
     class Delete(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00320028]
+        NAME: Literal['Queue.Delete']
 
         ticket: int = ...
         queue: str = ...
@@ -740,8 +742,8 @@ class Queue(amqp_object.Class):
 
     class DeleteOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00320029]
+        NAME: Literal['Queue.DeleteOk']
 
         message_count: Optional[int] = ...
 
@@ -755,8 +757,8 @@ class Queue(amqp_object.Class):
 
     class Unbind(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00320032]
+        NAME: Literal['Queue.Unbind']
 
         ticket: int = ...
         queue: str = ...
@@ -781,8 +783,8 @@ class Queue(amqp_object.Class):
 
     class UnbindOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x00320033]
+        NAME: Literal['Queue.UnbindOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -793,13 +795,13 @@ class Queue(amqp_object.Class):
 
 class Basic(amqp_object.Class):
 
-    INDEX: int = ...
-    NAME: str = ...
+    INDEX: Literal[0x003C]
+    NAME: Literal['Basic']
 
     class Qos(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C000A]
+        NAME: Literal['Basic.Qos']
 
         prefetch_size: int = ...
         prefetch_count: int = ...
@@ -820,8 +822,8 @@ class Basic(amqp_object.Class):
 
     class QosOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C000B]
+        NAME: Literal['Basic.QosOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -831,8 +833,8 @@ class Basic(amqp_object.Class):
 
     class Consume(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C0014]
+        NAME: Literal['Basic.Consume']
 
         ticket: int = ...
         queue: str = ...
@@ -863,8 +865,8 @@ class Basic(amqp_object.Class):
 
     class ConsumeOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C0015]
+        NAME: Literal['Basic.ConsumeOk']
 
         consumer_tag: Optional[int] = ...
 
@@ -878,8 +880,8 @@ class Basic(amqp_object.Class):
 
     class Cancel(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C001E]
+        NAME: Literal['Basic.Cancel']
 
         consumer_tag: Optional[int] = ...
         nowait: bool = ...
@@ -894,8 +896,8 @@ class Basic(amqp_object.Class):
 
     class CancelOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C001F]
+        NAME: Literal['Basic.CancelOk']
 
         consumer_tag: Optional[int] = ...
 
@@ -909,8 +911,8 @@ class Basic(amqp_object.Class):
 
     class Publish(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C0028]
+        NAME: Literal['Basic.Publish']
 
         ticket: int = ...
         exchange: str = ...
@@ -935,8 +937,8 @@ class Basic(amqp_object.Class):
 
     class Return(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C0032]
+        NAME: Literal['Basic.Return']
 
         reply_code: Optional[int] = ...
         reply_text: str = ...
@@ -959,8 +961,8 @@ class Basic(amqp_object.Class):
 
     class Deliver(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C003C]
+        NAME: Literal['Basic.Deliver']
 
         consumer_tag: Optional[str] = ...
         delivery_tag: Optional[int] = ...
@@ -985,8 +987,8 @@ class Basic(amqp_object.Class):
 
     class Get(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C0046]
+        NAME: Literal['Basic.Get']
 
         ticket: int = ...
         queue: str = ...
@@ -1007,8 +1009,8 @@ class Basic(amqp_object.Class):
 
     class GetOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C0047]
+        NAME: Literal['Basic.GetOk']
 
         delivery_tag: Optional[int] = ...
         redelivered: bool = ...
@@ -1033,8 +1035,8 @@ class Basic(amqp_object.Class):
 
     class GetEmpty(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C0048]
+        NAME: Literal['Basic.GetEmpty']
 
         cluster_id: str = ...
 
@@ -1048,8 +1050,8 @@ class Basic(amqp_object.Class):
 
     class Ack(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C0050]
+        NAME: Literal['Basic.Ack']
 
         delivery_tag: int = ...
         multiple: bool = ...
@@ -1064,8 +1066,8 @@ class Basic(amqp_object.Class):
 
     class Reject(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C005A]
+        NAME: Literal['Basic.Reject']
 
         delivery_tag: Optional[int] = ...
         requeue: bool = ...
@@ -1080,8 +1082,8 @@ class Basic(amqp_object.Class):
 
     class RecoverAsync(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C0064]
+        NAME: Literal['Basic.RecoverAsync']
 
         requeue: bool = ...
 
@@ -1095,8 +1097,8 @@ class Basic(amqp_object.Class):
 
     class Recover(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C006E]
+        NAME: Literal['Basic.Recover']
 
         requeue: bool = ...
 
@@ -1110,8 +1112,8 @@ class Basic(amqp_object.Class):
 
     class RecoverOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C006F]
+        NAME: Literal['Basic.RecoverOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -1121,8 +1123,8 @@ class Basic(amqp_object.Class):
 
     class Nack(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x003C0078]
+        NAME: Literal['Basic.Nack']
 
         delivery_tag: int = ...
         multiple: bool = ...
@@ -1144,13 +1146,13 @@ class Basic(amqp_object.Class):
 
 class Tx(amqp_object.Class):
 
-    INDEX: int = ...
-    NAME: str = ...
+    INDEX: Literal[0x005A]
+    NAME: Literal['Tx']
 
     class Select(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x005A000A]
+        NAME: Literal['Tx.Select']
 
         @property
         def synchronous(self) -> bool: ...
@@ -1160,8 +1162,8 @@ class Tx(amqp_object.Class):
 
     class SelectOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x005A000B]
+        NAME: Literal['Tx.SelectOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -1171,8 +1173,8 @@ class Tx(amqp_object.Class):
 
     class Commit(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x005A0014]
+        NAME: Literal['Tx.Commit']
 
         @property
         def synchronous(self) -> bool: ...
@@ -1182,8 +1184,8 @@ class Tx(amqp_object.Class):
 
     class CommitOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x005A0015]
+        NAME: Literal['Tx.CommitOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -1193,8 +1195,8 @@ class Tx(amqp_object.Class):
 
     class Rollback(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x005A001E]
+        NAME: Literal['Tx.Rollback']
 
         @property
         def synchronous(self) -> bool: ...
@@ -1204,8 +1206,8 @@ class Tx(amqp_object.Class):
 
     class RollbackOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x005A001F]
+        NAME: Literal['Tx.RollbackOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -1216,13 +1218,13 @@ class Tx(amqp_object.Class):
 
 class Confirm(amqp_object.Class):
 
-    INDEX: int = ...
-    NAME: str = ...
+    INDEX: Literal[0x0055]
+    NAME: Literal['Confirm']
 
     class Select(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x0055000A]
+        NAME: Literal['Confirm.Select']
 
         nowait: bool = ...
 
@@ -1236,8 +1238,8 @@ class Confirm(amqp_object.Class):
 
     class SelectOk(amqp_object.Method):
 
-        INDEX: int = ...
-        NAME: str = ...
+        INDEX: Literal[0x0055000B]
+        NAME: Literal['Confirm.SelectOk']
 
         @property
         def synchronous(self) -> bool: ...
@@ -1250,8 +1252,8 @@ class BasicProperties(amqp_object.Properties):
 
     CLASS: Type[Basic] = ...
 
-    INDEX: int = ...
-    NAME: str = ...
+    INDEX: Literal[0x003C]
+    NAME: Literal['BasicProperties']
 
     FLAG_CONTENT_TYPE: int = ...
     FLAG_CONTENT_ENCODING: int = ...

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any, Callable, List, Mapping, Optional, Sequence, Tuple, Union
 
+from typing_extensions import Literal
+
 from . import (
     callback,
     connection as connection_,
@@ -10,7 +12,7 @@ from . import (
 )
 from .exchange_type import ExchangeType
 
-MAX_CHANNELS: int
+MAX_CHANNELS: Literal[65535]  # per AMQP 0.9.1 spec.
 
 _OnAckNackCallback = Callable[[frame.Method[Union[spec.Basic.Ack, spec.Basic.Nack]]], None]
 _OnConfirmDeliveryCallback = Callable[[frame.Method[spec.Confirm.SelectOk]], None]
