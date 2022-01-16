@@ -242,7 +242,7 @@ class BlockingChannel:
         durable: bool = ...,
         exclusive: bool = ...,
         auto_delete: bool = ...,
-        arguments: Optional[spec.Queue.DeclareOk] = ...,
+        arguments: Optional[Mapping[str, Any]] = ...,
     ) -> frame.Method[spec.Queue.DeclareOk]: ...
 
     def queue_delete(
