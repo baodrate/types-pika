@@ -1,19 +1,37 @@
 from __future__ import annotations
 
-from typing import Any, Callable, List, Mapping, NamedTuple, Optional, Sequence, Union
+from typing import (
+    Any,
+    Callable,
+    List,
+    Mapping,
+    NamedTuple,
+    Optional,
+    Sequence,
+    Union,
+    TypeVar,
+    Tuple,
+)
 
 import twisted.internet.base
 import twisted.internet.defer
 import twisted.internet.interfaces
 import twisted.internet.protocol
 import twisted.python.failure
+from twisted.internet.defer import Deferred, DeferredQueue
 
-from .. import channel as channel_, connection as connection_, spec
+from .. import amqp_object
+from .. import frame
+from .. import spec
+from ..connection import Connection
+from ..connection import Parameters
+from ..channel import Channel
 
+_T = TypeVar("_T")
 
-class ClosableDeferredQueue(twisted.internet.defer.DeferredQueue):  # type: ignore
+class ClosableDeferredQueue(DeferredQueue[_T]):
 
-    closed: Any = ...  # TODO
+    closed: Union[twisted.python.failure.Failure, Exception] = ...
 
     def __init__(
         self,
@@ -21,27 +39,31 @@ class ClosableDeferredQueue(twisted.internet.defer.DeferredQueue):  # type: igno
         backlog: Optional[int] = ...,
     ) -> None: ...
 
-    def put(self, obj: Any) -> None: ...
-    def get(self) -> twisted.internet.defer.Deferred: ...
-    def close(self, reason: Union[twisted.python.failure.Failure, Exception]) -> None: ...
+    def put(self, obj: _T) -> None: ...
+    def get(self) -> Deferred[_T]: ...
+    def close(self, reason: Union[twisted.python.failure.Failure, Exception, str]) -> None: ...
 
 
+# Generic [named] tuples aren't supported (https://github.com/python/mypy/issues/685)
+# so we can't provide more specific type hints for `method`
 class ReceivedMessage(NamedTuple):
-
     channel: TwistedChannel
-    method: spec.Basic.Return
+    method: amqp_object.Method
     properties: spec.BasicProperties
     body: bytes
 
 
+
 class TwistedChannel:
 
-    def __init__(self, channel: channel_.Channel) -> None: ...
+    on_closed: Deferred[Union[twisted.python.failure.Failure, Exception, str]]
+
+    def __init__(self, channel: Channel) -> None: ...
 
     @property
     def channel_number(self) -> int: ...
     @property
-    def connection(self) -> connection_.Connection: ...
+    def connection(self) -> Connection: ...
 
     @property
     def is_closed(self) -> bool: ...
@@ -57,14 +79,17 @@ class TwistedChannel:
 
     def callback_deferred(
         self,
-        deferred: twisted.internet.defer.Deferred,
+        deferred: Deferred[Any],
         replies: Sequence[Any],
     ) -> None: ...
 
+    # ReceivedMessage.method: spec.Basic.Return
     def add_on_return_callback(self, callback: Callable[[ReceivedMessage], None]) -> None: ...
     def basic_ack(self, delivery_tag: int = ..., multiple: bool = ...) -> None: ...
     def basic_cancel(self, consumer_tag: str = ...) -> None: ...
 
+
+    # ReceivedMessage.method: spec.Basic.Deliver
     def basic_consume(
         self,
         queue: str,
@@ -72,13 +97,14 @@ class TwistedChannel:
         exclusive: bool = ...,
         consumer_tag: Optional[str] = ...,
         arguments: Optional[Mapping[str, Any]] = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[Tuple[ClosableDeferredQueue[ReceivedMessage], str]]: ...
 
+    # ReceivedMessage.method: spec.Basic.GetOk
     def basic_get(
         self,
         queue: str,
         auto_ack: bool = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[ReceivedMessage]: ...
 
     def basic_nack(
         self,
@@ -94,20 +120,22 @@ class TwistedChannel:
         body: bytes,
         properties: Optional[spec.BasicProperties] = ...,
         mandatory: bool = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[None]: ...
 
     def basic_qos(
         self,
         prefetch_size: int = ...,
         prefetch_count: int = ...,
         global_qos: bool = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[frame.Method[spec.Basic.QosOk]]: ...
 
     def basic_reject(self, delivery_tag: int, requeue: bool = ...) -> None: ...
-    def basic_recover(self, requeue: bool = ...) -> twisted.internet.defer.Deferred: ...
+    def basic_recover(
+        self, requeue: bool = ...
+    ) -> Deferred[frame.Method[spec.Basic.RecoverOk]]: ...
 
     def close(self, reply_code: int = ..., reply_text: str = ...) -> None: ...
-    def confirm_delivery(self) -> twisted.internet.defer.Deferred: ...
+    def confirm_delivery(self) -> Deferred[frame.Method[spec.Confirm.SelectOk]]: ...
 
     def exchange_bind(
         self,
@@ -115,7 +143,7 @@ class TwistedChannel:
         source: str,
         routing_key: str = ...,
         arguments: Optional[Mapping[str, Any]] = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[frame.Method[spec.Exchange.BindOk]]: ...
 
     def exchange_declare(
         self,
@@ -126,13 +154,13 @@ class TwistedChannel:
         auto_delete: bool = ...,
         internal: bool = ...,
         arguments: Optional[Mapping[str, Any]] = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[frame.Method[spec.Exchange.DeclareOk]]: ...
 
     def exchange_delete(
         self,
         exchange: Optional[str] = ...,
         if_unused: bool = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[frame.Method[spec.Exchange.DeleteOk]]: ...
 
     def exchange_unbind(
         self,
@@ -140,9 +168,9 @@ class TwistedChannel:
         source: Optional[str] = ...,
         routing_key: str = ...,
         arguments: Optional[Mapping[str, Any]] = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[frame.Method[spec.Exchange.UnbindOk]]: ...
 
-    def flow(self, active: bool) -> twisted.internet.defer.Deferred: ...
+    def flow(self, active: bool) -> Deferred[frame.Method[spec.Channel.FlowOk]]: ...
     def open(self) -> None: ...
 
     def queue_bind(
@@ -151,7 +179,7 @@ class TwistedChannel:
         exchange: str,
         routing_key: Optional[str] = ...,
         arguments: Optional[Mapping[str, Any]] = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[frame.Method[spec.Queue.BindOk]]: ...
 
     def queue_declare(
         self,
@@ -161,16 +189,16 @@ class TwistedChannel:
         exclusive: bool = ...,
         auto_delete: bool = ...,
         arguments: Optional[Mapping[str, Any]] = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[frame.Method[spec.Queue.DeclareOk]]: ...
 
     def queue_delete(
         self,
         queue: str,
         if_unused: bool = ...,
         if_empty: bool = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[frame.Method[spec.Queue.DeleteOk]]: ...
 
-    def queue_purge(self, queue: str) -> twisted.internet.defer.Deferred: ...
+    def queue_purge(self, queue: str) -> Deferred[frame.Method[spec.Queue.PurgeOk]]: ...
 
     def queue_unbind(
         self,
@@ -178,25 +206,25 @@ class TwistedChannel:
         exchange: Optional[str] = ...,
         routing_key: Optional[str] = ...,
         arguments: Optional[Mapping[str, Any]] = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[frame.Method[spec.Queue.UnbindOk]]: ...
 
-    def tx_commit(self) -> twisted.internet.defer.Deferred: ...
-    def tx_rollback(self) -> twisted.internet.defer.Deferred: ...
-    def tx_select(self) -> twisted.internet.defer.Deferred: ...
+    def tx_commit(self) -> Deferred[frame.Method[spec.Tx.CommitOk]]: ...
+    def tx_rollback(self) -> Deferred[frame.Method[spec.Tx.RollbackOk]]: ...
+    def tx_select(self) -> Deferred[frame.Method[spec.Tx.SelectOk]]: ...
 
 
-class TwistedProtocolConnection(twisted.internet.protocol.Protocol):  # type: ignore
+class TwistedProtocolConnection(twisted.internet.protocol.Protocol):
 
-    ready: twisted.internet.defer.Deferred = ...
-    closed: Optional[twisted.internet.defer.Deferred] = ...
+    ready: Deferred[TwistedProtocolConnection] = ...
+    closed: Optional[Deferred[Union[twisted.python.failure.Failure, Exception]]] = ...
 
     def __init__(
         self,
-        parameters: Optional[connection_.Parameters] = ...,
+        parameters: Optional[Parameters] = ...,
         custom_reactor: Optional[twisted.internet.base.ReactorBase] = ...,
     ) -> None: ...
 
-    def channel(self, channel_number: Optional[int] = ...) -> twisted.internet.defer.Deferred: ...
+    def channel(self, channel_number: Optional[int] = ...) -> Deferred[TwistedChannel]: ...
 
     @property
     def is_closed(self) -> bool: ...
@@ -205,7 +233,7 @@ class TwistedProtocolConnection(twisted.internet.protocol.Protocol):  # type: ig
         self,
         reply_code: int = ...,
         reply_text: str = ...,
-    ) -> twisted.internet.defer.Deferred: ...
+    ) -> Deferred[Exception]: ...
 
     # IProtocol methods
 
@@ -215,4 +243,4 @@ class TwistedProtocolConnection(twisted.internet.protocol.Protocol):  # type: ig
 
     # Our own methods
 
-    def connectionReady(self) -> None: ...
+    def connectionReady(self) -> TwistedProtocolConnection: ...
