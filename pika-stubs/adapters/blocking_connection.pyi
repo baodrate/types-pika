@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import types
-from typing import Any, Callable, Iterator, List, Mapping, Optional, Tuple, Type, Union
+from typing import Any, Callable, Iterator, List, Mapping, Optional, Tuple, Type, Union, Sequence
 
 from .. import channel, connection, frame, spec
 
@@ -10,7 +10,7 @@ class BlockingConnection:
 
     def __init__(
         self,
-        parameters: Optional[connection.Parameters] = ...,
+        parameters: connection.Parameters | Sequence[connection.Parameters] | None = ...,
         _impl_class: Optional[Any] = ...,
     ) -> None: ...
 
