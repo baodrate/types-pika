@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, List, Mapping, Optional, Type
 
 from . import amqp_object
+from .exchange_type import ExchangeType
 
 PROTOCOL_VERSION: Any
 PORT: int
@@ -101,7 +102,7 @@ class Connection(amqp_object.Class):
 
         challenge: Optional[str] = ...
 
-        def __init__(self, challenge: Optional[str]) -> None: ...
+        def __init__(self, challenge: Optional[str] = None) -> None: ...
 
         @property
         def synchronous(self) -> bool: ...
@@ -116,7 +117,7 @@ class Connection(amqp_object.Class):
 
         response: Optional[str] = ...
 
-        def __init__(self, response: Optional[str]) -> None: ...
+        def __init__(self, response: Optional[str] = None) -> None: ...
 
         @property
         def synchronous(self) -> bool: ...
@@ -133,7 +134,7 @@ class Connection(amqp_object.Class):
         frame_max: int = ...
         heartbeat: int = ...
 
-        def __init__(self, channel_max: int, frame_max: int, heartbeat: int) -> None: ...
+        def __init__(self, channel_max: int = ..., frame_max: int = ..., heartbeat: int = ...) -> None: ...
 
         @property
         def synchronous(self) -> bool: ...
@@ -436,7 +437,7 @@ class Exchange(amqp_object.Class):
             self,
             ticket: int = ...,
             exchange: Optional[str] = ...,
-            type: str = ...,
+            type: ExchangeType = ...,
             passive: bool = ...,
             durable: bool = ...,
             auto_delete: bool = ...,

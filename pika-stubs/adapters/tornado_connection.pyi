@@ -15,16 +15,16 @@ class TornadoConnection(base_connection.BaseConnection[tornado.ioloop.IOLoop]):
 
     def __init__(
         self,
-        parameters: Optional[connection.Parameters],
-        on_open_callback: Optional[_OnOpenCallback],
-        on_open_error_callback: Optional[_OnOpenErrorCallback],
-        on_close_callback: Optional[_OnCloseCallback],
+        parameters: Optional[connection.Parameters] = None,
+        on_open_callback: Optional[_OnOpenCallback] = None,
+        on_open_error_callback: Optional[_OnOpenErrorCallback] = None,
+        on_close_callback: Optional[_OnCloseCallback] = None,
         custom_ioloop: Optional[
             Union[
                 tornado.ioloop.IOLoop,
                 nbio_interface.AbstractIOServices,
             ],
-        ] = ...,
+        ] = None,
         internal_connection_workflow: bool = ...,
     ) -> None: ...
 

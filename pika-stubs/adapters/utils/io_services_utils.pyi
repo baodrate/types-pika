@@ -35,6 +35,6 @@ class StreamingConnectionMixin:
             ],
             None,
         ],
-        ssl_context: Optional[ssl.SSLContext],
-        server_hostname: Optional[str],
+        ssl_context: ssl.SSLContext | None = None,
+        server_hostname: str | None = None,
     ) -> nbio_interface.AbstractIOReference: ...

@@ -26,6 +26,7 @@ from .. import spec
 from ..connection import Connection
 from ..connection import Parameters
 from ..channel import Channel
+from ..exchange_type import ExchangeType
 
 _T = TypeVar("_T")
 
@@ -148,7 +149,7 @@ class TwistedChannel:
     def exchange_declare(
         self,
         exchange: str,
-        exchange_type: str = ...,
+        exchange_type: ExchangeType = ...,
         passive: bool = ...,
         durable: bool = ...,
         auto_delete: bool = ...,

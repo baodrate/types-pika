@@ -8,6 +8,7 @@ from . import (
     frame,
     spec,
 )
+from .exchange_type import ExchangeType
 
 MAX_CHANNELS: int
 
@@ -124,7 +125,7 @@ class Channel:
         callback: Optional[_OnBasicQosCallback] = ...,
     ) -> None: ...
 
-    def basic_reject(self, delivery_tag: int, requeue: bool = ...) -> None: ...
+    def basic_reject(self, delivery_tag: int = ..., requeue: bool = ...) -> None: ...
 
     def basic_recover(
         self,
@@ -155,7 +156,7 @@ class Channel:
     def exchange_declare(
         self,
         exchange: str,
-        exchange_type: str = ...,
+        exchange_type: ExchangeType = ...,
         passive: bool = ...,
         durable: bool = ...,
         auto_delete: bool = ...,

@@ -92,10 +92,10 @@ class SelectorIOServicesAdapter(
             ],
             None,
         ],
-        family: int,
-        socktype: int,
-        proto: int,
-        flags: int,
+        family: int = ...,
+        socktype: int = ...,
+        proto: int = ...,
+        flags: int = ...,
     ) -> nbio_interface.AbstractIOReference: ...
 
     def set_reader(self, fd: IO[AnyStr], on_readable: Callable[[], None]) -> None: ...

@@ -7,7 +7,6 @@ from typing import Any, AnyStr, Callable, IO, List, Optional, Text, Tuple, Union
 
 from ... import compat
 
-
 class AbstractIOServices(compat.AbstractBase):
 
     @abc.abstractmethod
@@ -37,10 +36,10 @@ class AbstractIOServices(compat.AbstractBase):
             ],
             None,
         ],
-        family: int,
-        socktype: int,
-        proto: int,
-        flags: int,
+        family: int = ...,
+        socktype: int = ...,
+        proto: int = ...,
+        flags: int = ...,
     ) -> AbstractIOReference: ...
 
     @abc.abstractmethod
@@ -65,8 +64,8 @@ class AbstractIOServices(compat.AbstractBase):
             ],
             None,
         ],
-        ssl_context: Optional[ssl.SSLContext],
-        server_hostname: Optional[str],
+        ssl_context: ssl.SSLContext | None = None,
+        server_hostname: str | None = None,
     ) -> AbstractIOReference: ...
 
 

@@ -4,6 +4,7 @@ import types
 from typing import Any, Callable, Iterator, List, Mapping, Optional, Tuple, Type, Union, Sequence
 
 from .. import channel, connection, frame, spec
+from ..exchange_type import ExchangeType
 
 
 class BlockingConnection:
@@ -205,7 +206,7 @@ class BlockingChannel:
     def exchange_declare(
         self,
         exchange: str,
-        exchange_type: str = ...,
+        exchange_type: ExchangeType = ...,
         passive: bool = ...,
         durable: bool = ...,
         auto_delete: bool = ...,
