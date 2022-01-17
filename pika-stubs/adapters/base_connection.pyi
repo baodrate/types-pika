@@ -10,15 +10,13 @@ from .. import connection
 from .utils import connection_workflow
 from .utils import nbio_interface
 
-_OnCloseCallback = Callable[['BaseConnection', Exception], None]
-_OnOpenCallback = Callable[['BaseConnection'], None]
-_OnOpenErrorCallback = Callable[['BaseConnection', str | Exception], None]
+_OnCloseCallback = Callable[["BaseConnection", Exception], None]
+_OnOpenCallback = Callable[["BaseConnection"], None]
+_OnOpenErrorCallback = Callable[["BaseConnection", str | Exception], None]
 
-_IOLoop = TypeVar('_IOLoop')
-
+_IOLoop = TypeVar("_IOLoop")
 
 class BaseConnection(Generic[_IOLoop], connection.Connection):
-
     def __init__(
         self,
         parameters: connection.Parameters | None,
@@ -28,7 +26,6 @@ class BaseConnection(Generic[_IOLoop], connection.Connection):
         nbio: nbio_interface.AbstractIOServices,
         internal_connection_workflow: bool,
     ) -> None: ...
-
     @classmethod
     @abc.abstractmethod
     def create_connection(
@@ -36,15 +33,14 @@ class BaseConnection(Generic[_IOLoop], connection.Connection):
         connection_configs: Sequence[connection.Parameters],
         on_done: Callable[
             [
-                connection.Connection |
-                connection_workflow.AMQPConnectionWorkflowFailed |
-                connection_workflow.AMQPConnectionWorkflowAborted,
+                connection.Connection
+                | connection_workflow.AMQPConnectionWorkflowFailed
+                | connection_workflow.AMQPConnectionWorkflowAborted
             ],
-            None
+            None,
         ],
         custom_ioloop: _IOLoop | None = ...,
         workflow: connection_workflow.AbstractAMQPConnectionWorkflow | None = ...,
     ) -> connection_workflow.AbstractAMQPConnectionWorkflow: ...
-
     @property
     def ioloop(self) -> _IOLoop: ...

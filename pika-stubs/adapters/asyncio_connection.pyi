@@ -8,13 +8,11 @@ from .. import connection
 from . import base_connection
 from .utils import connection_workflow
 
-_OnCloseCallback = Callable[['AsyncioConnection', Exception], None]
-_OnOpenCallback = Callable[['AsyncioConnection'], None]
-_OnOpenErrorCallback = Callable[['AsyncioConnection', str | Exception], None]
-
+_OnCloseCallback = Callable[["AsyncioConnection", Exception], None]
+_OnOpenCallback = Callable[["AsyncioConnection"], None]
+_OnOpenErrorCallback = Callable[["AsyncioConnection", str | Exception], None]
 
 class AsyncioConnection(base_connection.BaseConnection[asyncio.AbstractEventLoop]):
-
     def __init__(
         self,
         parameters: connection.Parameters | None = ...,
@@ -24,18 +22,17 @@ class AsyncioConnection(base_connection.BaseConnection[asyncio.AbstractEventLoop
         custom_ioloop: asyncio.AbstractEventLoop | None = ...,
         internal_connection_workflow: bool = ...,
     ) -> None: ...
-
     @classmethod
     def create_connection(
         cls,
         connection_configs: Sequence[connection.Parameters],
         on_done: Callable[
             [
-                connection.Connection |
-                connection_workflow.AMQPConnectionWorkflowFailed |
-                connection_workflow.AMQPConnectionWorkflowAborted
+                connection.Connection
+                | connection_workflow.AMQPConnectionWorkflowFailed
+                | connection_workflow.AMQPConnectionWorkflowAborted
             ],
-            None
+            None,
         ],
         custom_ioloop: asyncio.AbstractEventLoop | None = ...,
         workflow: connection_workflow.AbstractAMQPConnectionWorkflow | None = ...,
