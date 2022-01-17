@@ -1,18 +1,18 @@
 from __future__ import annotations
 
 import ssl
-from typing import Any, Callable, Dict, Mapping, Type
-
+from collections.abc import Mapping
+from typing import Any
+from typing import Callable
+from typing import Type
 from typing_extensions import Literal
 
-from . import (
-    callback,
-    channel as channel_,
-    compat,
-    credentials as credentials_,
-    frame,
-    spec,
-)
+from . import callback
+from . import channel as channel_
+from . import compat
+from . import credentials as credentials_
+from . import frame
+from . import spec
 
 PRODUCT: str
 
@@ -178,7 +178,7 @@ class Connection(compat.AbstractBase):
     params: Parameters | None = ...
     callbacks: callback.CallbackManager = ...
     server_capabilities: Mapping[str, Any] | None = ...
-    server_properties: Dict[str, Any] | None = ...
+    server_properties: dict[str, Any] | None = ...
     known_hosts: str | None = ...
 
     bytes_sent: int = ...

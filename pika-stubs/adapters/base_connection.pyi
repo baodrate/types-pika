@@ -1,8 +1,14 @@
+from __future__ import annotations
+
 import abc
-from typing import Callable, Generic, Sequence, TypeVar
+from collections.abc import Sequence
+from typing import Callable
+from typing import Generic
+from typing import TypeVar
 
 from .. import connection
-from .utils import connection_workflow, nbio_interface
+from .utils import connection_workflow
+from .utils import nbio_interface
 
 _OnCloseCallback = Callable[['BaseConnection', Exception], None]
 _OnOpenCallback = Callable[['BaseConnection'], None]

@@ -2,8 +2,14 @@ from __future__ import annotations
 
 import abc
 import ssl
-from socket import AddressFamily, SocketKind, socket
-from typing import Any, AnyStr, Callable, IO, List, Text, Tuple
+from socket import AddressFamily
+from socket import SocketKind
+from socket import socket
+from typing import IO
+from typing import Any
+from typing import AnyStr
+from typing import Callable
+from typing import Text
 
 from ... import compat
 
@@ -30,7 +36,7 @@ class AbstractIOServices(compat.AbstractBase):
         on_done: Callable[
             [
                 BaseException |
-                List[Tuple[AddressFamily, SocketKind, int, str, Tuple[Any, ...]]],
+                list[tuple[AddressFamily, SocketKind, int, str, tuple[Any, ...]]],
             ],
             None,
         ],
@@ -56,7 +62,7 @@ class AbstractIOServices(compat.AbstractBase):
         on_done: Callable[
             [
                 BaseException |
-                Tuple[AbstractStreamTransport, AbstractStreamProtocol],
+                tuple[AbstractStreamTransport, AbstractStreamProtocol],
             ],
             None,
         ],

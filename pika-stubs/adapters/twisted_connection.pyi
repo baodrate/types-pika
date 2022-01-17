@@ -1,29 +1,27 @@
 from __future__ import annotations
 
-from typing import (
-    Any,
-    Callable,
-    List,
-    Mapping,
-    NamedTuple,
-    Sequence,
-    TypeVar,
-    Tuple,
-)
+from collections.abc import Mapping
+from collections.abc import Sequence
+from typing import Any
+from typing import AnyStr
+from typing import Callable
+from typing import NamedTuple
+from typing import TypeVar
 
 import twisted.internet.base
 import twisted.internet.defer
 import twisted.internet.interfaces
 import twisted.internet.protocol
 import twisted.python.failure
-from twisted.internet.defer import Deferred, DeferredQueue
+from twisted.internet.defer import Deferred
+from twisted.internet.defer import DeferredQueue
 
 from .. import amqp_object
 from .. import frame
 from .. import spec
+from ..channel import Channel
 from ..connection import Connection
 from ..connection import Parameters
-from ..channel import Channel
 from ..exchange_type import ExchangeType
 
 _T = TypeVar("_T")
@@ -72,7 +70,7 @@ class TwistedChannel:
     @property
     def flow_active(self) -> bool: ...
     @property
-    def consumer_tags(self) -> List[str]: ...
+    def consumer_tags(self) -> list[str]: ...
 
     def callback_deferred(
         self,
@@ -93,7 +91,7 @@ class TwistedChannel:
         exclusive: bool = ...,
         consumer_tag: str | None = ...,
         arguments: Mapping[str, Any] | None = ...,
-    ) -> Deferred[Tuple[ClosableDeferredQueue[ReceivedMessage], str]]: ...
+    ) -> Deferred[tuple[ClosableDeferredQueue[ReceivedMessage], str]]: ...
 
     # ReceivedMessage.method: spec.Basic.GetOk
     def basic_get(
@@ -113,7 +111,7 @@ class TwistedChannel:
         self,
         exchange: str,
         routing_key: str,
-        body: bytes | str,
+        body: AnyStr,
         properties: spec.BasicProperties | None = ...,
         mandatory: bool = ...,
     ) -> Deferred[None]: ...

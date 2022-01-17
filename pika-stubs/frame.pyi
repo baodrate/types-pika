@@ -1,6 +1,11 @@
-from typing import Any, Generic, Tuple, TypeVar
+from __future__ import annotations
 
-from . import amqp_object, spec
+from typing import Any
+from typing import Generic
+from typing import TypeVar
+
+from . import amqp_object
+from . import spec
 
 _Method = TypeVar('_Method', bound=amqp_object.Method)
 
@@ -79,4 +84,4 @@ class ProtocolHeader(amqp_object.AMQPObject):
     def marshal(self) -> bytes: ...
 
 
-def decode_frame(data_in: bytes) -> Tuple[int, Frame | None]: ...
+def decode_frame(data_in: bytes) -> tuple[int, Frame | None]: ...

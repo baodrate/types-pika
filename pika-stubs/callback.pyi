@@ -1,4 +1,8 @@
-from typing import Any, Callable, Mapping, Tuple
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import Any
+from typing import Callable
 
 from . import amqp_object
 
@@ -30,7 +34,7 @@ class CallbackManager:
         one_shot: bool = ...,
         only_caller: _Caller | None = ...,
         arguments: Mapping[str, Any] | None = ...,
-    ) -> Tuple[_Prefix, Any]: ...
+    ) -> tuple[_Prefix, Any]: ...
 
     def clear(self) -> None: ...
     def cleanup(self, prefix: _Prefix) -> bool: ...

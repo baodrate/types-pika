@@ -1,11 +1,18 @@
 from __future__ import annotations
 
 import abc
-from typing import Any, AnyStr, Callable, IO, Sequence
+from collections.abc import Sequence
+from typing import IO
+from typing import Any
+from typing import AnyStr
+from typing import Callable
 
-from .. import compat, connection
+from .. import compat
+from .. import connection
 from . import base_connection
-from .utils import connection_workflow, nbio_interface, selector_ioloop_adapter
+from .utils import connection_workflow
+from .utils import nbio_interface
+from .utils import selector_ioloop_adapter
 
 SELECT_TYPE: str | None
 

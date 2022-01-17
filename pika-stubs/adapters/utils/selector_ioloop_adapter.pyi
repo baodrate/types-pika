@@ -1,18 +1,18 @@
-import abc
-from socket import AddressFamily, SocketKind
-from typing import (
-    Any,
-    AnyStr,
-    Callable,
-    Generic,
-    IO,
-    List,
-    Text,
-    Tuple,
-    TypeVar,
-)
+from __future__ import annotations
 
-from . import io_services_utils, nbio_interface
+import abc
+from socket import AddressFamily
+from socket import SocketKind
+from typing import IO
+from typing import Any
+from typing import AnyStr
+from typing import Callable
+from typing import Generic
+from typing import Text
+from typing import TypeVar
+
+from . import io_services_utils
+from . import nbio_interface
 
 _Timeout = TypeVar('_Timeout', bound=object)
 
@@ -84,7 +84,7 @@ class SelectorIOServicesAdapter(
         on_done: Callable[
             [
                 BaseException |
-                List[Tuple[AddressFamily, SocketKind, int, str, Tuple[Any, ...]]],
+                list[tuple[AddressFamily, SocketKind, int, str, tuple[Any, ...]]],
             ],
             None,
         ],

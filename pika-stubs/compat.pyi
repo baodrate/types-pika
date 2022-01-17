@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import abc
 import re
-from typing import Tuple, Type, KeysView, ValuesView, ItemsView, Any
+from typing import Any
+from typing import AnyStr
+from typing import ItemsView
+from typing import KeysView
+from typing import Type
+from typing import ValuesView
 
 PY2: bool
 PY3: bool
@@ -17,8 +22,8 @@ class AbstractBase(metaclass=abc.ABCMeta): ...
 SOCKET_ERROR: Type[Exception]
 SOL_TCP: int
 
-basestring: Tuple[Type[str]]
-str_or_bytes: Tuple[Type[str], Type[bytes]]
+basestring: tuple[Type[str]]
+str_or_bytes: tuple[Type[str], Type[bytes]]
 xrange: Type[range]
 unicode_type: Type[str]
 
@@ -35,12 +40,12 @@ class long(int):
 def canonical_str(value) -> str: ...
 def is_integer(value: Any) -> bool: ...
 
-def as_bytes(value: str | bytes) -> bytes: ...
+def as_bytes(value: AnyStr) -> bytes: ...
 def to_digit(value): ...
 def get_linux_version(release_str) -> tuple[int, int, int]: ...
 
 HAVE_SIGNAL: bool
 EINTR_IS_EXPOSED: bool
-LINUX_VERSION: Tuple[int, int, int] | None
+LINUX_VERSION: tuple[int, int, int] | None
 _LOCALHOST: str
 _LOCALHOST_V6: str

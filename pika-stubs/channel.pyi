@@ -1,15 +1,16 @@
 from __future__ import annotations
 
-from typing import Any, Callable, List, Mapping, Sequence, Tuple
-
+from collections.abc import Mapping
+from collections.abc import Sequence
+from typing import Any
+from typing import AnyStr
+from typing import Callable
 from typing_extensions import Literal
 
-from . import (
-    callback,
-    connection as connection_,
-    frame,
-    spec,
-)
+from . import callback
+from . import connection as connection_
+from . import frame
+from . import spec
 from .exchange_type import ExchangeType
 
 MAX_CHANNELS: Literal[65535]  # per AMQP 0.9.1 spec.
@@ -113,7 +114,7 @@ class Channel:
         self,
         exchange: str,
         routing_key: str,
-        body: bytes | str,
+        body: AnyStr,
         properties: spec.BasicProperties | None = ...,
         mandatory: bool = ...,
     ) -> None: ...
@@ -143,7 +144,7 @@ class Channel:
     ) -> None: ...
 
     @property
-    def consumer_tags(self) -> List[str]: ...
+    def consumer_tags(self) -> list[str]: ...
 
     def exchange_bind(
         self,
@@ -244,9 +245,9 @@ class ContentFrameAssembler:
     def __init__(self) -> None: ...
     def process(
         self, frame_value: frame.Method | frame.Header | frame.Body
-    ) -> Tuple[frame.Method, frame.Header, bytes] | None: ...
-    def _finish(self) -> Tuple[frame.Method, frame.Header, bytes]: ...
+    ) -> tuple[frame.Method, frame.Header, bytes] | None: ...
+    def _finish(self) -> tuple[frame.Method, frame.Header, bytes]: ...
 
-    def _handle_body_frame(self, body_frame) -> Tuple[frame.Method, frame.Header, bytes] | None: ...
+    def _handle_body_frame(self, body_frame) -> tuple[frame.Method, frame.Header, bytes] | None: ...
 
     def _reset(self) -> None: ...

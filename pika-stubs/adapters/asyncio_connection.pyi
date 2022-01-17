@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import asyncio
-from typing import Callable, Sequence
+from collections.abc import Sequence
+from typing import Callable
 
 from .. import connection
 from . import base_connection

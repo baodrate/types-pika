@@ -1,11 +1,19 @@
 from __future__ import annotations
 
 import types
-from typing import Any, Callable, Iterator, List, Mapping, Tuple, Type, Sequence
+from collections.abc import Mapping
+from collections.abc import Sequence
+from typing import Any
+from typing import AnyStr
+from typing import Callable
+from typing import Iterator
+from typing import Type
 
-from .. import channel, connection, frame, spec
+from .. import channel
+from .. import connection
+from .. import frame
+from .. import spec
 from ..exchange_type import ExchangeType
-
 
 class BlockingConnection:
 
@@ -109,7 +117,7 @@ class BlockingChannel:
     @property
     def is_open(self) -> bool: ...
     @property
-    def consumer_tags(self) -> List[str]: ...
+    def consumer_tags(self) -> list[str]: ...
 
     def close(self, reply_code: int = ..., reply_text: str = ...) -> None: ...
     def flow(self, active: bool) -> bool: ...
@@ -135,8 +143,8 @@ class BlockingChannel:
         arguments: Mapping[str, Any] | None = ...,
     ) -> str: ...
 
-    def basic_cancel(self, consumer_tag: str) -> List[
-            Tuple[spec.Basic.Deliver, spec.BasicProperties, bytes],
+    def basic_cancel(self, consumer_tag: str) -> list[
+            tuple[spec.Basic.Deliver, spec.BasicProperties, bytes],
     ]: ...
     def start_consuming(self) -> None: ...
     def stop_consuming(self, consumer_tag: str | None = ...) -> None: ...
@@ -149,12 +157,12 @@ class BlockingChannel:
         arguments: Mapping[str, Any] | None = ...,
         inactivity_timeout: float | None = ...,
     ) -> Iterator[
-        Tuple[
+        tuple[
             spec.Basic.Deliver,
             spec.BasicProperties,
             bytes,
         ] |
-        Tuple[
+        tuple[
             None,
             None,
             None,
@@ -174,7 +182,7 @@ class BlockingChannel:
         requeue: bool = ...,
     ) -> None: ...
 
-    def basic_get(self, queue: str, auto_ack: bool = ...) -> Tuple[
+    def basic_get(self, queue: str, auto_ack: bool = ...) -> tuple[
         spec.Basic.GetOk | None,
         spec.BasicProperties | None,
         str | None,
@@ -184,7 +192,7 @@ class BlockingChannel:
         self,
         exchange: str,
         routing_key: str,
-        body: bytes | str,
+        body: AnyStr,
         properties: spec.BasicProperties | None = ...,
         mandatory: bool = ...,
     ) -> None: ...

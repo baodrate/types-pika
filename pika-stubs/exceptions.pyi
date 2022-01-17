@@ -1,7 +1,8 @@
-from typing import Sequence
+from __future__ import annotations
+
+from collections.abc import Sequence
 
 from .adapters import blocking_connection
-
 
 class AMQPError(Exception):
     ...

@@ -1,7 +1,8 @@
-from typing import Tuple, Type
+from __future__ import annotations
+
+from typing import Type
 
 from . import spec
-
 
 class PlainCredentials:
 
@@ -16,7 +17,7 @@ class PlainCredentials:
     def response_for(
         self,
         start: spec.Connection.Start,
-    ) -> Tuple[str | None, str | None]: ...
+    ) -> tuple[str | None, str | None]: ...
 
     def erase_credentials(self) -> None: ...
 
@@ -30,7 +31,7 @@ class ExternalCredentials:
     def response_for(
         self,
         start: spec.Connection.Start,
-    ) -> Tuple[str | None, str | None]: ...
+    ) -> tuple[str | None, str | None]: ...
 
     def erase_credentials(self) -> None: ...
 

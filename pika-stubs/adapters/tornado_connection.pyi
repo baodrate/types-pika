@@ -1,10 +1,14 @@
-from typing import Callable, Sequence
+from __future__ import annotations
+
+from collections.abc import Sequence
+from typing import Callable
 
 import tornado.ioloop
 
 from .. import connection
 from . import base_connection
-from .utils import connection_workflow, nbio_interface
+from .utils import connection_workflow
+from .utils import nbio_interface
 
 _OnCloseCallback = Callable[['TornadoConnection', Exception], None]
 _OnOpenCallback = Callable[['TornadoConnection'], None]
