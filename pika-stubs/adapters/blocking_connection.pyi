@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import types
-from typing import Any, Callable, Iterator, List, Mapping, Optional, Tuple, Type, Union, Sequence
+from typing import Any, Callable, Iterator, List, Mapping, Tuple, Type, Sequence
 
 from .. import channel, connection, frame, spec
 from ..exchange_type import ExchangeType
@@ -12,16 +12,16 @@ class BlockingConnection:
     def __init__(
         self,
         parameters: connection.Parameters | Sequence[connection.Parameters] | None = ...,
-        _impl_class: Optional[Any] = ...,
+        _impl_class: Any | None = ...,
     ) -> None: ...
 
     def __enter__(self) -> BlockingConnection: ...
 
     def __exit__(
         self,
-        exc_type: Optional[Type[BaseException]],
-        value: Optional[BaseException],
-        traceback: Optional[types.TracebackType],
+        exc_type: Type[BaseException] | None,
+        value: BaseException | None,
+        traceback: types.TracebackType | None,
     ) -> None: ...
 
     def add_on_connection_blocked_callback(
@@ -45,7 +45,7 @@ class BlockingConnection:
     def close(self, reply_code: int = ..., reply_text: str = ...) -> None: ...
     def process_data_events(self, time_limit: int = ...) -> None: ...
     def sleep(self, duration: float) -> None: ...
-    def channel(self, channel_number: Optional[int] = ...) -> BlockingChannel: ...
+    def channel(self, channel_number: int | None = ...) -> BlockingChannel: ...
 
     @property
     def is_closed(self) -> bool: ...
@@ -95,9 +95,9 @@ class BlockingChannel:
 
     def __exit__(
         self,
-        exc_type: Optional[Type[BaseException]],
-        value: Optional[BaseException],
-        traceback: Optional[types.TracebackType],
+        exc_type: Type[BaseException] | None,
+        value: BaseException | None,
+        traceback: types.TracebackType | None,
     ) -> None: ...
 
     @property
@@ -131,36 +131,34 @@ class BlockingChannel:
         ],
         auto_ack: bool = ...,
         exclusive: bool = ...,
-        consumer_tag: Optional[str] = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        consumer_tag: str | None = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> str: ...
 
     def basic_cancel(self, consumer_tag: str) -> List[
             Tuple[spec.Basic.Deliver, spec.BasicProperties, bytes],
     ]: ...
     def start_consuming(self) -> None: ...
-    def stop_consuming(self, consumer_tag: Optional[str] = ...) -> None: ...
+    def stop_consuming(self, consumer_tag: str | None = ...) -> None: ...
 
     def consume(
         self,
         queue: str,
         auto_ack: bool = ...,
         exclusive: bool = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
-        inactivity_timeout: Optional[float] = ...,
+        arguments: Mapping[str, Any] | None = ...,
+        inactivity_timeout: float | None = ...,
     ) -> Iterator[
-        Union[
-            Tuple[
-                spec.Basic.Deliver,
-                spec.BasicProperties,
-                bytes,
-            ],
-            Tuple[
-                None,
-                None,
-                None,
-            ],
-        ]
+        Tuple[
+            spec.Basic.Deliver,
+            spec.BasicProperties,
+            bytes,
+        ] |
+        Tuple[
+            None,
+            None,
+            None,
+        ],
     ]: ...
 
     def get_waiting_message_count(self) -> int: ...
@@ -171,15 +169,15 @@ class BlockingChannel:
 
     def basic_nack(
         self,
-        delivery_tag: Optional[int] = ...,
+        delivery_tag: int | None = ...,
         multiple: bool = ...,
         requeue: bool = ...,
     ) -> None: ...
 
     def basic_get(self, queue: str, auto_ack: bool = ...) -> Tuple[
-        Optional[spec.Basic.GetOk],
-        Optional[spec.BasicProperties],
-        Optional[str],
+        spec.Basic.GetOk | None,
+        spec.BasicProperties | None,
+        str | None,
     ]: ...
 
     def basic_publish(
@@ -187,7 +185,7 @@ class BlockingChannel:
         exchange: str,
         routing_key: str,
         body: bytes | str,
-        properties: Optional[spec.BasicProperties] = ...,
+        properties: spec.BasicProperties | None = ...,
         mandatory: bool = ...,
     ) -> None: ...
 
@@ -199,7 +197,7 @@ class BlockingChannel:
     ) -> None: ...
 
     def basic_recover(self, requeue: bool = ...) -> None: ...
-    def basic_reject(self, delivery_tag: Optional[int] = ..., requeue: bool = ...) -> None: ...
+    def basic_reject(self, delivery_tag: int | None = ..., requeue: bool = ...) -> None: ...
 
     def confirm_delivery(self) -> None: ...
 
@@ -211,12 +209,12 @@ class BlockingChannel:
         durable: bool = ...,
         auto_delete: bool = ...,
         internal: bool = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> frame.Method[spec.Exchange.DeclareOk]: ...
 
     def exchange_delete(
         self,
-        exchange: Optional[str] = ...,
+        exchange: str | None = ...,
         if_unused: bool = ...,
     ) -> frame.Method[spec.Exchange.DeleteOk]: ...
 
@@ -225,15 +223,15 @@ class BlockingChannel:
         destination: str,
         source: str,
         routing_key: str = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> frame.Method[spec.Exchange.BindOk]: ...
 
     def exchange_unbind(
         self,
-        destination: Optional[str] = ...,
-        source: Optional[str] = ...,
+        destination: str | None = ...,
+        source: str | None = ...,
         routing_key: str = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> frame.Method[spec.Exchange.UnbindOk]: ...
 
     def queue_declare(
@@ -243,7 +241,7 @@ class BlockingChannel:
         durable: bool = ...,
         exclusive: bool = ...,
         auto_delete: bool = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> frame.Method[spec.Queue.DeclareOk]: ...
 
     def queue_delete(
@@ -259,16 +257,16 @@ class BlockingChannel:
         self,
         queue: str,
         exchange: str,
-        routing_key: Optional[str] = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        routing_key: str | None = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> frame.Method[spec.Queue.BindOk]: ...
 
     def queue_unbind(
         self,
         queue: Any,
-        exchange: Optional[str] = ...,
-        routing_key: Optional[str] = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        exchange: str | None = ...,
+        routing_key: str | None = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> frame.Method[spec.Queue.UnbindOk]: ...
 
     def tx_select(self) -> frame.Method[spec.Tx.SelectOk]: ...

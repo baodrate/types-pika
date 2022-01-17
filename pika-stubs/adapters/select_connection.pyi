@@ -1,33 +1,28 @@
 from __future__ import annotations
 
 import abc
-from typing import Any, AnyStr, Callable, IO, Optional, Sequence, Union
+from typing import Any, AnyStr, Callable, IO, Sequence
 
 from .. import compat, connection
 from . import base_connection
 from .utils import connection_workflow, nbio_interface, selector_ioloop_adapter
 
-SELECT_TYPE: Optional[str]
+SELECT_TYPE: str | None
 
 _OnCloseCallback = Callable[[base_connection.BaseConnection, Exception], None]
 _OnOpenCallback = Callable[[base_connection.BaseConnection], None]
-_OnOpenErrorCallback = Callable[[base_connection.BaseConnection, Union[str, Exception]], None]
+_OnOpenErrorCallback = Callable[[base_connection.BaseConnection, str | Exception], None]
 
 
 class SelectConnection(base_connection.BaseConnection['IOLoop']):
 
     def __init__(
         self,
-        parameters: Optional[connection.Parameters] = ...,
-        on_open_callback: Optional[_OnOpenCallback] = ...,
-        on_open_error_callback: Optional[_OnOpenErrorCallback] = ...,
-        on_close_callback: Optional[_OnCloseCallback] = ...,
-        custom_ioloop: Optional[
-            Union[
-                IOLoop,
-                nbio_interface.AbstractIOServices,
-            ],
-        ] = ...,
+        parameters: connection.Parameters | None = ...,
+        on_open_callback: _OnOpenCallback | None = ...,
+        on_open_error_callback: _OnOpenErrorCallback | None = ...,
+        on_close_callback: _OnCloseCallback | None = ...,
+        custom_ioloop: IOLoop | nbio_interface.AbstractIOServices | None = ...,
         internal_connection_workflow: bool = ...,
     ) -> None: ...
 
@@ -37,16 +32,14 @@ class SelectConnection(base_connection.BaseConnection['IOLoop']):
         connection_configs: Sequence[connection.Parameters],
         on_done: Callable[
             [
-                Union[
-                    connection.Connection,
-                    connection_workflow.AMQPConnectionWorkflowFailed,
-                    connection_workflow.AMQPConnectionWorkflowAborted,
-                ],
+                connection.Connection |
+                connection_workflow.AMQPConnectionWorkflowFailed |
+                connection_workflow.AMQPConnectionWorkflowAborted
             ],
             None
         ],
-        custom_ioloop: Optional[IOLoop] = ...,
-        workflow: Optional[connection_workflow.AbstractAMQPConnectionWorkflow] = ...,
+        custom_ioloop: IOLoop | None = ...,
+        workflow: connection_workflow.AbstractAMQPConnectionWorkflow | None = ...,
     ) -> connection_workflow.AbstractAMQPConnectionWorkflow: ...
 
 

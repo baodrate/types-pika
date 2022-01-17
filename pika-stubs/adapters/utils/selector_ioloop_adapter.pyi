@@ -7,11 +7,9 @@ from typing import (
     Generic,
     IO,
     List,
-    Optional,
     Text,
     Tuple,
     TypeVar,
-    Union,
 )
 
 from . import io_services_utils, nbio_interface
@@ -81,14 +79,12 @@ class SelectorIOServicesAdapter(
 
     def getaddrinfo(
         self,
-        host: Optional[Union[bytearray, bytes, Text]],
-        port: Union[str, int, None],
+        host: bytearray | bytes | Text | None,
+        port: str | int | None,
         on_done: Callable[
             [
-                Union[
-                    BaseException,
-                    List[Tuple[AddressFamily, SocketKind, int, str, Tuple[Any, ...]]],
-                ]
+                BaseException |
+                List[Tuple[AddressFamily, SocketKind, int, str, Tuple[Any, ...]]],
             ],
             None,
         ],

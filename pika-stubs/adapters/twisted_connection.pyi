@@ -6,9 +6,7 @@ from typing import (
     List,
     Mapping,
     NamedTuple,
-    Optional,
     Sequence,
-    Union,
     TypeVar,
     Tuple,
 )
@@ -32,17 +30,17 @@ _T = TypeVar("_T")
 
 class ClosableDeferredQueue(DeferredQueue[_T]):
 
-    closed: Union[twisted.python.failure.Failure, Exception] = ...
+    closed: twisted.python.failure.Failure | Exception = ...
 
     def __init__(
         self,
-        size: Optional[int] = ...,
-        backlog: Optional[int] = ...,
+        size: int | None = ...,
+        backlog: int | None = ...,
     ) -> None: ...
 
     def put(self, obj: _T) -> None: ...
     def get(self) -> Deferred[_T]: ...
-    def close(self, reason: Union[twisted.python.failure.Failure, Exception, str]) -> None: ...
+    def close(self, reason: twisted.python.failure.Failure | Exception | str) -> None: ...
 
 
 # Generic [named] tuples aren't supported (https://github.com/python/mypy/issues/685)
@@ -55,7 +53,7 @@ class ReceivedMessage(NamedTuple):
 
 
 class TwistedChannel:
-    on_closed: Deferred[Union[twisted.python.failure.Failure, Exception, str]]
+    on_closed: Deferred[twisted.python.failure.Failure | Exception | str]
 
     def __init__(self, channel: Channel) -> None: ...
 
@@ -93,8 +91,8 @@ class TwistedChannel:
         queue: str,
         auto_ack: bool = ...,
         exclusive: bool = ...,
-        consumer_tag: Optional[str] = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        consumer_tag: str | None = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> Deferred[Tuple[ClosableDeferredQueue[ReceivedMessage], str]]: ...
 
     # ReceivedMessage.method: spec.Basic.GetOk
@@ -106,7 +104,7 @@ class TwistedChannel:
 
     def basic_nack(
         self,
-        delivery_tag: Optional[int] = ...,
+        delivery_tag: int | None = ...,
         multiple: bool = ...,
         requeue: bool = ...,
     ) -> None: ...
@@ -116,7 +114,7 @@ class TwistedChannel:
         exchange: str,
         routing_key: str,
         body: bytes | str,
-        properties: Optional[spec.BasicProperties] = ...,
+        properties: spec.BasicProperties | None = ...,
         mandatory: bool = ...,
     ) -> Deferred[None]: ...
 
@@ -140,7 +138,7 @@ class TwistedChannel:
         destination: str,
         source: str,
         routing_key: str = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> Deferred[frame.Method[spec.Exchange.BindOk]]: ...
 
     def exchange_declare(
@@ -151,21 +149,21 @@ class TwistedChannel:
         durable: bool = ...,
         auto_delete: bool = ...,
         internal: bool = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> Deferred[frame.Method[spec.Exchange.DeclareOk]]: ...
 
     def exchange_delete(
         self,
-        exchange: Optional[str] = ...,
+        exchange: str | None = ...,
         if_unused: bool = ...,
     ) -> Deferred[frame.Method[spec.Exchange.DeleteOk]]: ...
 
     def exchange_unbind(
         self,
-        destination: Optional[str] = ...,
-        source: Optional[str] = ...,
+        destination: str | None = ...,
+        source: str | None = ...,
         routing_key: str = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> Deferred[frame.Method[spec.Exchange.UnbindOk]]: ...
 
     def flow(self, active: bool) -> Deferred[frame.Method[spec.Channel.FlowOk]]: ...
@@ -175,8 +173,8 @@ class TwistedChannel:
         self,
         queue: str,
         exchange: str,
-        routing_key: Optional[str] = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        routing_key: str | None = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> Deferred[frame.Method[spec.Queue.BindOk]]: ...
 
     def queue_declare(
@@ -186,7 +184,7 @@ class TwistedChannel:
         durable: bool = ...,
         exclusive: bool = ...,
         auto_delete: bool = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> Deferred[frame.Method[spec.Queue.DeclareOk]]: ...
 
     def queue_delete(
@@ -201,9 +199,9 @@ class TwistedChannel:
     def queue_unbind(
         self,
         queue: str,
-        exchange: Optional[str] = ...,
-        routing_key: Optional[str] = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
+        exchange: str | None = ...,
+        routing_key: str | None = ...,
+        arguments: Mapping[str, Any] | None = ...,
     ) -> Deferred[frame.Method[spec.Queue.UnbindOk]]: ...
 
     def tx_commit(self) -> Deferred[frame.Method[spec.Tx.CommitOk]]: ...
@@ -214,15 +212,15 @@ class TwistedChannel:
 class TwistedProtocolConnection(twisted.internet.protocol.Protocol):
 
     ready: Deferred[TwistedProtocolConnection] = ...
-    closed: Optional[Deferred[Union[twisted.python.failure.Failure, Exception]]] = ...
+    closed: Deferred[twisted.python.failure.Failure | Exception] | None = ...
 
     def __init__(
         self,
-        parameters: Optional[Parameters] = ...,
-        custom_reactor: Optional[twisted.internet.base.ReactorBase] = ...,
+        parameters: Parameters | None = ...,
+        custom_reactor: twisted.internet.base.ReactorBase | None = ...,
     ) -> None: ...
 
-    def channel(self, channel_number: Optional[int] = ...) -> Deferred[TwistedChannel]: ...
+    def channel(self, channel_number: int | None = ...) -> Deferred[TwistedChannel]: ...
 
     @property
     def is_open(self) -> bool: ...

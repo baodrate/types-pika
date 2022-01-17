@@ -1,4 +1,4 @@
-from typing import Any, Generic, Optional, Tuple, TypeVar
+from typing import Any, Generic, Tuple, TypeVar
 
 from . import amqp_object, spec
 
@@ -72,11 +72,11 @@ class ProtocolHeader(amqp_object.AMQPObject):
 
     def __init__(
         self,
-        major: Optional[int] = ...,
-        minor: Optional[int] = ...,
-        revision: Optional[int] = ...,
+        major: int | None = ...,
+        minor: int | None = ...,
+        revision: int | None = ...,
     ) -> None: ...
     def marshal(self) -> bytes: ...
 
 
-def decode_frame(data_in: bytes) -> Tuple[int, Optional[Frame]]: ...
+def decode_frame(data_in: bytes) -> Tuple[int, Frame | None]: ...

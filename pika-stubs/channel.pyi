@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Callable, List, Mapping, Optional, Sequence, Tuple, Union
+from typing import Any, Callable, List, Mapping, Sequence, Tuple
 
 from typing_extensions import Literal
 
@@ -14,7 +14,7 @@ from .exchange_type import ExchangeType
 
 MAX_CHANNELS: Literal[65535]  # per AMQP 0.9.1 spec.
 
-_OnAckNackCallback = Callable[[frame.Method[Union[spec.Basic.Ack, spec.Basic.Nack]]], None]
+_OnAckNackCallback = Callable[[frame.Method[spec.Basic.Ack | spec.Basic.Nack]], None]
 _OnConfirmDeliveryCallback = Callable[[frame.Method[spec.Confirm.SelectOk]], None]
 _OnBasicConsumeCallback = Callable[[frame.Method[spec.Basic.ConsumeOk]], None]
 _OnBasicGetCallback = Callable[['Channel', spec.Basic.GetOk, spec.BasicProperties, bytes], None]
@@ -81,7 +81,7 @@ class Channel:
     def basic_cancel(
         self,
         consumer_tag: str = ...,
-        callback: Optional[_OnBasicCancelCallback] = ...,
+        callback: _OnBasicCancelCallback | None = ...,
     ) -> None: ...
 
     def basic_consume(
@@ -90,9 +90,9 @@ class Channel:
         on_message_callback: _OnMessageCallback,
         auto_ack: bool = ...,
         exclusive: bool = ...,
-        consumer_tag: Optional[str] = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
-        callback: Optional[_OnBasicConsumeCallback] = ...,
+        consumer_tag: str | None = ...,
+        arguments: Mapping[str, Any] | None = ...,
+        callback: _OnBasicConsumeCallback | None = ...,
     ) -> str: ...
 
     def basic_get(
@@ -104,7 +104,7 @@ class Channel:
 
     def basic_nack(
         self,
-        delivery_tag: Optional[int] = ...,
+        delivery_tag: int | None = ...,
         multiple: bool = ...,
         requeue: bool = ...,
     ) -> None: ...
@@ -114,7 +114,7 @@ class Channel:
         exchange: str,
         routing_key: str,
         body: bytes | str,
-        properties: Optional[spec.BasicProperties] = ...,
+        properties: spec.BasicProperties | None = ...,
         mandatory: bool = ...,
     ) -> None: ...
 
@@ -123,7 +123,7 @@ class Channel:
         prefetch_size: int = ...,
         prefetch_count: int = ...,
         global_qos: bool = ...,
-        callback: Optional[_OnBasicQosCallback] = ...,
+        callback: _OnBasicQosCallback | None = ...,
     ) -> None: ...
 
     def basic_reject(self, delivery_tag: int = ..., requeue: bool = ...) -> None: ...
@@ -131,7 +131,7 @@ class Channel:
     def basic_recover(
         self,
         requeue: bool = ...,
-        callback: Optional[_OnBasicRecoverCallback] = ...,
+        callback: _OnBasicRecoverCallback | None = ...,
     ) -> None: ...
 
     def close(self, reply_code: int = ..., reply_text: str = ...) -> None: ...
@@ -139,7 +139,7 @@ class Channel:
     def confirm_delivery(
         self,
         ack_nack_callback: _OnAckNackCallback,
-        callback: Optional[_OnConfirmDeliveryCallback] = ...,
+        callback: _OnConfirmDeliveryCallback | None = ...,
     ) -> None: ...
 
     @property
@@ -150,8 +150,8 @@ class Channel:
         destination: str,
         source: str,
         routing_key: str = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
-        callback: Optional[_OnExchangeBindCallback] = ...,
+        arguments: Mapping[str, Any] | None = ...,
+        callback: _OnExchangeBindCallback | None = ...,
     ) -> None: ...
 
     def exchange_declare(
@@ -162,27 +162,27 @@ class Channel:
         durable: bool = ...,
         auto_delete: bool = ...,
         internal: bool = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
-        callback: Optional[_OnExchangeDeclareCallback] = ...,
+        arguments: Mapping[str, Any] | None = ...,
+        callback: _OnExchangeDeclareCallback | None = ...,
     ) -> None: ...
 
     def exchange_delete(
         self,
-        exchange: Optional[str] = ...,
+        exchange: str | None = ...,
         if_unused: bool = ...,
-        callback: Optional[_OnExchangeDeleteCallback] = ...,
+        callback: _OnExchangeDeleteCallback | None = ...,
     ) -> None: ...
 
     def exchange_unbind(
         self,
-        destination: Optional[str] = ...,
-        source: Optional[str] = ...,
+        destination: str | None = ...,
+        source: str | None = ...,
         routing_key: str = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
-        callback: Optional[_OnExchangeUnbindCallback] = ...,
+        arguments: Mapping[str, Any] | None = ...,
+        callback: _OnExchangeUnbindCallback | None = ...,
     ) -> None: ...
 
-    def flow(self, active: bool, callback: Optional[_OnFlowCallback] = ...) -> None: ...
+    def flow(self, active: bool, callback: _OnFlowCallback | None = ...) -> None: ...
 
     @property
     def is_closed(self) -> bool: ...
@@ -197,9 +197,9 @@ class Channel:
         self,
         queue: str,
         exchange: str,
-        routing_key: Optional[str] = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
-        callback: Optional[_OnQueueBindCallback] = ...,
+        routing_key: str | None = ...,
+        arguments: Mapping[str, Any] | None = ...,
+        callback: _OnQueueBindCallback | None = ...,
     ) -> None: ...
 
     def queue_declare(
@@ -209,8 +209,8 @@ class Channel:
         durable: bool = ...,
         exclusive: bool = ...,
         auto_delete: bool = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
-        callback: Optional[_OnQueueDeclareCallback] = ...,
+        arguments: Mapping[str, Any] | None = ...,
+        callback: _OnQueueDeclareCallback | None = ...,
     ) -> None: ...
 
     def queue_delete(
@@ -218,27 +218,27 @@ class Channel:
         queue: str,
         if_unused: bool = ...,
         if_empty: bool = ...,
-        callback: Optional[_OnQueueDeleteCallback] = ...,
+        callback: _OnQueueDeleteCallback | None = ...,
     ) -> None: ...
 
     def queue_purge(
         self,
         queue: str,
-        callback: Optional[_OnQueuePurgeCallback] = ...,
+        callback: _OnQueuePurgeCallback | None = ...,
     ) -> None: ...
 
     def queue_unbind(
         self,
         queue: str,
-        exchange: Optional[str] = ...,
-        routing_key: Optional[str] = ...,
-        arguments: Optional[Mapping[str, Any]] = ...,
-        callback: Optional[_OnQueueUnbindCallback] = ...,
+        exchange: str | None = ...,
+        routing_key: str | None = ...,
+        arguments: Mapping[str, Any] | None = ...,
+        callback: _OnQueueUnbindCallback | None = ...,
     ) -> None: ...
 
-    def tx_commit(self, callback: Optional[_OnTxCommitCallback] = ...) -> None: ...
-    def tx_rollback(self, callback: Optional[_OnTxRollbackCallback] = ...) -> None: ...
-    def tx_select(self, callback: Optional[_OnTxSelectCallback] = ...) -> None: ...
+    def tx_commit(self, callback: _OnTxCommitCallback | None = ...) -> None: ...
+    def tx_rollback(self, callback: _OnTxRollbackCallback | None = ...) -> None: ...
+    def tx_select(self, callback: _OnTxSelectCallback | None = ...) -> None: ...
 
 class ContentFrameAssembler:
     def __init__(self) -> None: ...

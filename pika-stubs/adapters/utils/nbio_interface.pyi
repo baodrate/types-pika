@@ -3,7 +3,7 @@ from __future__ import annotations
 import abc
 import ssl
 from socket import AddressFamily, SocketKind, socket
-from typing import Any, AnyStr, Callable, IO, List, Optional, Text, Tuple, Union
+from typing import Any, AnyStr, Callable, IO, List, Text, Tuple
 
 from ... import compat
 
@@ -25,14 +25,12 @@ class AbstractIOServices(compat.AbstractBase):
     @abc.abstractmethod
     def getaddrinfo(
         self,
-        host: Optional[Union[bytearray, bytes, Text]],
-        port: Union[str, int, None],
+        host: bytearray | bytes | Text | None,
+        port: str | int | None,
         on_done: Callable[
             [
-                Union[
-                    BaseException,
-                    List[Tuple[AddressFamily, SocketKind, int, str, Tuple[Any, ...]]],
-                ]
+                BaseException |
+                List[Tuple[AddressFamily, SocketKind, int, str, Tuple[Any, ...]]],
             ],
             None,
         ],
@@ -47,7 +45,7 @@ class AbstractIOServices(compat.AbstractBase):
         self,
         sock: socket,
         resolved_addr: Any,
-        on_done: Callable[[Optional[BaseException]], None],
+        on_done: Callable[[BaseException | None], None],
     ) -> AbstractIOReference: ...
 
     @abc.abstractmethod
@@ -57,10 +55,8 @@ class AbstractIOServices(compat.AbstractBase):
         sock: socket,
         on_done: Callable[
             [
-                Union[
-                    BaseException,
-                    Tuple[AbstractStreamTransport, AbstractStreamProtocol],
-                ]
+                BaseException |
+                Tuple[AbstractStreamTransport, AbstractStreamProtocol],
             ],
             None,
         ],
@@ -98,7 +94,7 @@ class AbstractStreamProtocol(compat.AbstractBase):
     @abc.abstractmethod
     def connection_made(self, transport: AbstractStreamTransport) -> None: ...
     @abc.abstractmethod
-    def connection_lost(self, error: Optional[BaseException]) -> None: ...
+    def connection_lost(self, error: BaseException | None) -> None: ...
     @abc.abstractmethod
     def eof_received(self) -> Any: ...
     @abc.abstractmethod

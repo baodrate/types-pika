@@ -1,4 +1,4 @@
-from typing import Any, Callable, Union
+from typing import Any, Callable
 
 from ... import compat, connection
 from . import nbio_interface
@@ -70,11 +70,9 @@ class AbstractAMQPConnectionWorkflow(compat.AbstractBase):
         native_loop: object,
         on_done: Callable[
             [
-                Union[
-                    connection.Connection,
-                    AMQPConnectionWorkflowFailed,
-                    AMQPConnectionWorkflowAborted,
-                ],
+                connection.Connection |
+                AMQPConnectionWorkflowFailed|
+                AMQPConnectionWorkflowAborted
             ],
             None
         ],
@@ -96,11 +94,9 @@ class AMQPConnectionWorkflow(AbstractAMQPConnectionWorkflow):
         native_loop: object,
         on_done: Callable[
             [
-                Union[
-                    connection.Connection,
-                    AMQPConnectionWorkflowFailed,
-                    AMQPConnectionWorkflowAborted,
-                ],
+                connection.Connection |
+                AMQPConnectionWorkflowFailed |
+                AMQPConnectionWorkflowAborted
             ],
             None
         ],

@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-from typing import Optional
-
 
 class AMQPObject:
 
     NAME: str = ...
-    INDEX: Optional[int] = ...
+    INDEX: int | None = ...
 
 
 class Class(AMQPObject):

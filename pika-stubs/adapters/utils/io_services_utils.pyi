@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import ssl
 from socket import socket
-from typing import Any, Callable, Optional, Tuple, Union
+from typing import Any, Callable, Tuple
 
 from . import nbio_interface
 
@@ -15,7 +15,7 @@ class SocketConnectionMixin:
         self,
         sock: socket,
         resolved_addr: Any,
-        on_done: Callable[[Optional[BaseException]], None],
+        on_done: Callable[[BaseException | None], None],
     ) -> nbio_interface.AbstractIOReference: ...
 
 
@@ -25,18 +25,7 @@ class StreamingConnectionMixin:
         self,
         protocol_factory: Callable[[], nbio_interface.AbstractStreamProtocol],
         sock: socket,
-        on_done: Callable[
-            [
-                Union[
-                    BaseException,
-                    Tuple[
-                        nbio_interface.AbstractStreamTransport,
-                        nbio_interface.AbstractStreamProtocol,
-                    ],
-                ]
-            ],
-            None,
-        ],
+        on_done: Callable[[ BaseException | Tuple[ nbio_interface.AbstractStreamTransport, nbio_interface.AbstractStreamProtocol]], None],
         ssl_context: ssl.SSLContext | None = ...,
         server_hostname: str | None = ...,
     ) -> nbio_interface.AbstractIOReference: ...

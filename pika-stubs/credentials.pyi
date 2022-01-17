@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, Union, Type
+from typing import Tuple, Type
 
 from . import spec
 
@@ -16,7 +16,7 @@ class PlainCredentials:
     def response_for(
         self,
         start: spec.Connection.Start,
-    ) -> Tuple[Optional[str], Optional[str]]: ...
+    ) -> Tuple[str | None, str | None]: ...
 
     def erase_credentials(self) -> None: ...
 
@@ -30,10 +30,10 @@ class ExternalCredentials:
     def response_for(
         self,
         start: spec.Connection.Start,
-    ) -> Tuple[Optional[str], Optional[str]]: ...
+    ) -> Tuple[str | None, str | None]: ...
 
     def erase_credentials(self) -> None: ...
 
 
-_VALID_TYPES = Union[PlainCredentials, ExternalCredentials]
+_VALID_TYPES = PlainCredentials | ExternalCredentials
 VALID_TYPES: list[_VALID_TYPES]
