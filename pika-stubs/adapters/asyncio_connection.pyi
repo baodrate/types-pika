@@ -14,11 +14,11 @@ class AsyncioConnection(base_connection.BaseConnection[asyncio.AbstractEventLoop
 
     def __init__(
         self,
-        parameters: Optional[connection.Parameters] = None,
-        on_open_callback: Optional[_OnOpenCallback] = None,
-        on_open_error_callback: Optional[_OnOpenErrorCallback] = None,
-        on_close_callback: Optional[_OnCloseCallback] = None,
-        custom_ioloop: Optional[asyncio.AbstractEventLoop] = None,
+        parameters: Optional[connection.Parameters] = ...,
+        on_open_callback: Optional[_OnOpenCallback] = ...,
+        on_open_error_callback: Optional[_OnOpenErrorCallback] = ...,
+        on_close_callback: Optional[_OnCloseCallback] = ...,
+        custom_ioloop: Optional[asyncio.AbstractEventLoop] = ...,
         internal_connection_workflow: bool = ...,
     ) -> None: ...
 

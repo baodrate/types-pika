@@ -54,9 +54,7 @@ class ReceivedMessage(NamedTuple):
     body: bytes
 
 
-
 class TwistedChannel:
-
     on_closed: Deferred[Union[twisted.python.failure.Failure, Exception, str]]
 
     def __init__(self, channel: Channel) -> None: ...
@@ -88,7 +86,6 @@ class TwistedChannel:
     def add_on_return_callback(self, callback: Callable[[ReceivedMessage], None]) -> None: ...
     def basic_ack(self, delivery_tag: int = ..., multiple: bool = ...) -> None: ...
     def basic_cancel(self, consumer_tag: str = ...) -> None: ...
-
 
     # ReceivedMessage.method: spec.Basic.Deliver
     def basic_consume(

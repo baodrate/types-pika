@@ -64,8 +64,8 @@ class AbstractIOServices(compat.AbstractBase):
             ],
             None,
         ],
-        ssl_context: ssl.SSLContext | None = None,
-        server_hostname: str | None = None,
+        ssl_context: ssl.SSLContext | None = ...,
+        server_hostname: str | None = ...,
     ) -> AbstractIOReference: ...
 
 
