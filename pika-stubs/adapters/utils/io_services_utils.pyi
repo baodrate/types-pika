@@ -6,6 +6,8 @@ from typing import Any, Callable, Optional, Tuple, Union
 
 from . import nbio_interface
 
+def check_callback_arg(callback: Callable, name: str) -> None: ...
+def check_fd_arg(fd: int) -> None: ...
 
 class SocketConnectionMixin:
 

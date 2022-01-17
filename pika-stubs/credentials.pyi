@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, Union
+from typing import Optional, Tuple, Union, Type
 
 from . import spec
 
@@ -35,4 +35,5 @@ class ExternalCredentials:
     def erase_credentials(self) -> None: ...
 
 
-VALID_TYPES = Union[PlainCredentials, ExternalCredentials]
+_VALID_TYPES = Union[PlainCredentials, ExternalCredentials]
+VALID_TYPES: list[_VALID_TYPES]

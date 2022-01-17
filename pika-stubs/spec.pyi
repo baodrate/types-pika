@@ -4,7 +4,8 @@ from typing import Any, List, Mapping, Optional, Type
 
 from typing_extensions import Literal
 
-from . import amqp_object
+from . import amqp_object as amqp_object
+from .compat import str_or_bytes as str_or_bytes
 from .exchange_type import ExchangeType
 
 PROTOCOL_VERSION: Any

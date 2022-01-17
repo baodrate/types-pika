@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numbers
 import ssl
-from typing import Any, Callable, Dict, Mapping, Optional, Union
+from typing import Any, Callable, Dict, Mapping, Optional, Union, Type
 
 from typing_extensions import Literal
 
@@ -20,10 +20,7 @@ PRODUCT: str
 _OnHeartbeatTimeoutCallback = Callable[['Connection', numbers.Integral], int]
 _OnCloseCallback = Callable[['Connection', Exception], None]
 _OnConnectionBlockedCallback = Callable[
-    [
-        'Connection',
-        frame.Method[spec.Connection.Blocked]
-    ],
+    ['Connection', frame.Method[spec.Connection.Blocked]],
     None,
 ]
 _OnConnectionUnblockedCallback = Callable[
@@ -46,7 +43,7 @@ class Parameters:
     DEFAULT_BLOCKED_CONNECTION_TIMEOUT: Optional[numbers.Real] = ...
     DEFAULT_CHANNEL_MAX: int = ...
     DEFAULT_CLIENT_PROPERTIES: Optional[Mapping[str, Any]] = ...
-    DEFAULT_CREDENTIALS: credentials_.VALID_TYPES = ...
+    DEFAULT_CREDENTIALS: credentials_._VALID_TYPES = ...
     DEFAULT_CONNECTION_ATTEMPTS: Literal[1] = ...
     DEFAULT_FRAME_MAX: int = ...
     DEFAULT_HEARTBEAT_TIMEOUT: Optional[Union[numbers.Integral, _OnHeartbeatTimeoutCallback]] = ...
@@ -79,9 +76,9 @@ class Parameters:
     @connection_attempts.setter
     def connection_attempts(self, value: numbers.Integral) -> None: ...
     @property
-    def credentials(self) -> credentials_.VALID_TYPES: ...
+    def credentials(self) -> credentials_._VALID_TYPES: ...
     @credentials.setter
-    def credentials(self, value: credentials_.VALID_TYPES) -> None: ...
+    def credentials(self, value: credentials_._VALID_TYPES) -> None: ...
     @property
     def frame_max(self) -> numbers.Integral: ...
     @frame_max.setter
@@ -132,30 +129,26 @@ class Parameters:
     @tcp_options.setter
     def tcp_options(self, value: Optional[Mapping[str, Any]]) -> None: ...
 
-
 class ConnectionParameters(Parameters):
-
-    class _DEFAULT:
-        ...
-
+    class _DEFAULT: ...
     def __init__(
         self,
-        host: Union[str, _DEFAULT] = ...,
-        port: Union[int, _DEFAULT] = ...,
-        virtual_host: Union[str, _DEFAULT] = ...,
-        credentials: Union[credentials_.VALID_TYPES, _DEFAULT] = ...,
-        channel_max: Union[int, _DEFAULT] = ...,
-        frame_max: Union[int, _DEFAULT] = ...,
-        heartbeat: Union[int, _OnHeartbeatTimeoutCallback, None, _DEFAULT] = ...,
-        ssl_options: Union[SSLOptions, _DEFAULT] = ...,
-        connection_attempts: Union[int, _DEFAULT] = ...,
-        retry_delay: Union[numbers.Real, _DEFAULT] = ...,
-        socket_timeout: Union[numbers.Real, _DEFAULT] = ...,
-        stack_timeout: Union[numbers.Real, _DEFAULT] = ...,
-        locale: Union[str, _DEFAULT] = ...,
-        blocked_connection_timeout: Union[numbers.Real, None, _DEFAULT] = ...,
-        client_properties: Union[Mapping[str, Any], None, _DEFAULT] = ...,
-        tcp_options: Union[Mapping[str, Any], None, _DEFAULT] = ...,
+        host: Union[str, Type[_DEFAULT]] = ...,
+        port: Union[int, Type[_DEFAULT]] = ...,
+        virtual_host: Union[str, Type[_DEFAULT]] = ...,
+        credentials: Union[credentials_._VALID_TYPES, Type[_DEFAULT]] = ...,
+        channel_max: Union[int, Type[_DEFAULT]] = ...,
+        frame_max: Union[int, Type[_DEFAULT]] = ...,
+        heartbeat: Union[int, _OnHeartbeatTimeoutCallback, None, Type[_DEFAULT]] = ...,
+        ssl_options: Union[SSLOptions, Type[_DEFAULT]] = ...,
+        connection_attempts: Union[int, Type[_DEFAULT]] = ...,
+        retry_delay: Union[numbers.Real, Type[_DEFAULT]] = ...,
+        socket_timeout: Union[numbers.Real, Type[_DEFAULT]] = ...,
+        stack_timeout: Union[numbers.Real, Type[_DEFAULT]] = ...,
+        locale: Union[str, Type[_DEFAULT]] = ...,
+        blocked_connection_timeout: Union[numbers.Real, None, Type[_DEFAULT]] = ...,
+        client_properties: Union[Mapping[str, Any], None, Type[_DEFAULT]] = ...,
+        tcp_options: Union[Mapping[str, Any], None, Type[_DEFAULT]] = ...,
         **kwargs: Any,
     ): ...
 
