@@ -8,6 +8,7 @@ from typing import AnyStr
 from typing import Callable
 from typing import Iterator
 from typing import Type
+from typing import overload
 
 from .. import channel
 from .. import connection
@@ -94,13 +95,23 @@ class BlockingChannel:
     def basic_cancel(self, consumer_tag: str) -> list[tuple[spec.Basic.Deliver, spec.BasicProperties, bytes]]: ...
     def start_consuming(self) -> None: ...
     def stop_consuming(self, consumer_tag: str | None = ...) -> None: ...
+    @overload
+    def consume(
+        self,
+        queue: str,
+        auto_ack: bool = ...,
+        exclusive: bool = ...,
+        arguments: dict[str, Any] | None = ...,
+        inactivity_timeout: None = ...,
+    ) -> Iterator[tuple[spec.Basic.Deliver, spec.BasicProperties, bytes]]: ...
+    @overload
     def consume(
         self,
         queue: str,
         auto_ack: bool = ...,
         exclusive: bool = ...,
         arguments: Mapping[str, Any] | None = ...,
-        inactivity_timeout: float | None = ...,
+        inactivity_timeout: float = ...,
     ) -> Iterator[tuple[spec.Basic.Deliver, spec.BasicProperties, bytes] | tuple[None, None, None]]: ...
     def get_waiting_message_count(self) -> int: ...
     def cancel(self) -> int: ...
