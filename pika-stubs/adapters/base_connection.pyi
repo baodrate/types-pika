@@ -1,28 +1,31 @@
+from __future__ import annotations
+
 import abc
-from typing import Callable, Generic, Optional, Sequence, TypeVar, Union
+from collections.abc import Sequence
+from typing import Callable
+from typing import Generic
+from typing import TypeVar
 
 from .. import connection
-from .utils import connection_workflow, nbio_interface
+from .utils import connection_workflow
+from .utils import nbio_interface
 
-_OnCloseCallback = Callable[['BaseConnection', Exception], None]
-_OnOpenCallback = Callable[['BaseConnection'], None]
-_OnOpenErrorCallback = Callable[['BaseConnection', Union[str, Exception]], None]
+_OnCloseCallback = Callable[[BaseConnection, Exception], None]
+_OnOpenCallback = Callable[[BaseConnection], None]
+_OnOpenErrorCallback = Callable[[BaseConnection, str | Exception], None]
 
-_IOLoop = TypeVar('_IOLoop')
-
+_IOLoop = TypeVar("_IOLoop")
 
 class BaseConnection(Generic[_IOLoop], connection.Connection):
-
     def __init__(
         self,
-        parameters: Optional[connection.Parameters],
-        on_open_callback: Optional[_OnOpenCallback],
-        on_open_error_callback: Optional[_OnOpenErrorCallback],
-        on_close_callback: Optional[_OnCloseCallback],
+        parameters: connection.Parameters | None,
+        on_open_callback: _OnOpenCallback | None,
+        on_open_error_callback: _OnOpenErrorCallback | None,
+        on_close_callback: _OnCloseCallback | None,
         nbio: nbio_interface.AbstractIOServices,
         internal_connection_workflow: bool,
     ) -> None: ...
-
     @classmethod
     @abc.abstractmethod
     def create_connection(
@@ -30,17 +33,14 @@ class BaseConnection(Generic[_IOLoop], connection.Connection):
         connection_configs: Sequence[connection.Parameters],
         on_done: Callable[
             [
-                Union[
-                    connection.Connection,
-                    connection_workflow.AMQPConnectionWorkflowFailed,
-                    connection_workflow.AMQPConnectionWorkflowAborted,
-                ],
+                connection.Connection
+                | connection_workflow.AMQPConnectionWorkflowFailed
+                | connection_workflow.AMQPConnectionWorkflowAborted
             ],
-            None
+            None,
         ],
-        custom_ioloop: Optional[_IOLoop] = ...,
-        workflow: Optional[connection_workflow.AbstractAMQPConnectionWorkflow] = ...,
+        custom_ioloop: _IOLoop | None = ...,
+        workflow: connection_workflow.AbstractAMQPConnectionWorkflow | None = ...,
     ) -> connection_workflow.AbstractAMQPConnectionWorkflow: ...
-
     @property
     def ioloop(self) -> _IOLoop: ...
