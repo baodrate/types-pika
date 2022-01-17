@@ -3,7 +3,6 @@ from .connection import SSLOptions as SSLOptions
 from .connection import URLParameters as URLParameters
 from .credentials import PlainCredentials as PlainCredentials
 from .spec import BasicProperties as BasicProperties
-from .delivery_mode import DeliveryMode as DeliveryMode
 
 from . import adapters
 from .adapters import BaseConnection as BaseConnection
