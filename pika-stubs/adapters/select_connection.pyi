@@ -20,7 +20,7 @@ _OnCloseCallback = Callable[[base_connection.BaseConnection, Exception], None]
 _OnOpenCallback = Callable[[base_connection.BaseConnection], None]
 _OnOpenErrorCallback = Callable[[base_connection.BaseConnection, str | Exception], None]
 
-class SelectConnection(base_connection.BaseConnection["IOLoop"]):
+class SelectConnection(base_connection.BaseConnection[IOLoop]):
     def __init__(
         self,
         parameters: connection.Parameters | None = ...,

@@ -8,9 +8,9 @@ from .. import connection
 from . import base_connection
 from .utils import connection_workflow
 
-_OnCloseCallback = Callable[["AsyncioConnection", Exception], None]
-_OnOpenCallback = Callable[["AsyncioConnection"], None]
-_OnOpenErrorCallback = Callable[["AsyncioConnection", str | Exception], None]
+_OnCloseCallback = Callable[[AsyncioConnection, Exception], None]
+_OnOpenCallback = Callable[[AsyncioConnection], None]
+_OnOpenErrorCallback = Callable[[AsyncioConnection, str | Exception], None]
 
 class AsyncioConnection(base_connection.BaseConnection[asyncio.AbstractEventLoop]):
     def __init__(

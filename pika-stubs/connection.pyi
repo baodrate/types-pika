@@ -16,12 +16,12 @@ from . import spec
 
 PRODUCT: str
 
-_OnHeartbeatTimeoutCallback = Callable[["Connection", int], int]
-_OnCloseCallback = Callable[["Connection", Exception], None]
-_OnConnectionBlockedCallback = Callable[["Connection", frame.Method[spec.Connection.Blocked]], None]
-_OnConnectionUnblockedCallback = Callable[["Connection", frame.Method[spec.Connection.Unblocked]], None]
-_OnOpenCallback = Callable[["Connection"], None]
-_OnOpenErrorCallback = Callable[["Connection", str | Exception], None]
+_OnHeartbeatTimeoutCallback = Callable[[Connection, int], int]
+_OnCloseCallback = Callable[[Connection, Exception], None]
+_OnConnectionBlockedCallback = Callable[[Connection, frame.Method[spec.Connection.Blocked]], None]
+_OnConnectionUnblockedCallback = Callable[[Connection, frame.Method[spec.Connection.Unblocked]], None]
+_OnOpenCallback = Callable[[Connection], None]
+_OnOpenErrorCallback = Callable[[Connection, str | Exception], None]
 _OnOpenChannelCallback = Callable[[channel_.Channel], None]
 
 class Parameters:

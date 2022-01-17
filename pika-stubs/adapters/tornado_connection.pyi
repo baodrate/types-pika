@@ -10,9 +10,9 @@ from . import base_connection
 from .utils import connection_workflow
 from .utils import nbio_interface
 
-_OnCloseCallback = Callable[["TornadoConnection", Exception], None]
-_OnOpenCallback = Callable[["TornadoConnection"], None]
-_OnOpenErrorCallback = Callable[["TornadoConnection", str | Exception], None]
+_OnCloseCallback = Callable[[TornadoConnection, Exception], None]
+_OnOpenCallback = Callable[[TornadoConnection], None]
+_OnOpenErrorCallback = Callable[[TornadoConnection, str | Exception], None]
 
 class TornadoConnection(base_connection.BaseConnection[tornado.ioloop.IOLoop]):
     def __init__(

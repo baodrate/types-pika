@@ -10,9 +10,9 @@ from .. import connection
 from .utils import connection_workflow
 from .utils import nbio_interface
 
-_OnCloseCallback = Callable[["BaseConnection", Exception], None]
-_OnOpenCallback = Callable[["BaseConnection"], None]
-_OnOpenErrorCallback = Callable[["BaseConnection", str | Exception], None]
+_OnCloseCallback = Callable[[BaseConnection, Exception], None]
+_OnOpenCallback = Callable[[BaseConnection], None]
+_OnOpenErrorCallback = Callable[[BaseConnection, str | Exception], None]
 
 _IOLoop = TypeVar("_IOLoop")
 
