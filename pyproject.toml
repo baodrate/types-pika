@@ -30,3 +30,36 @@ use_parentheses = true
 extra_standard_library = [
     "typing_extensions",
 ]
+
+[tool.pyright]
+include = ["pika-stubs"]
+exclude = [
+    "**/__pycache__",
+]
+ignore = []
+stubPath = "."
+
+typeCheckingMode = "strict"
+
+strictListInference = true
+strictDictionaryInference = true
+strictSetInference = true
+strictParameterNoneValue = true
+
+reportPrivateUsage = "warning"
+reportPropertyTypeMismatch = "warning"
+reportMissingImports = "error"
+reportMissingModuleSource = "erroor"
+reportMissingTypeStubs = "error"
+reportUnusedImport = false
+reportUnusedClass = "error"
+reportUnusedFunction = "error"
+reportUnusedVariable = "error"
+reportDuplicateImport = "error"
+reportUnknownParameterType = "error"
+reportUnknownArgumentType = "error"
+reportUnknownLambdaType = "error"
+reportUnknownVariableType = "error"
+reportUnknownMemberType = "error"
+reportMissingTypeArgument = "error"
+reportMissingParameterType = "error"
