@@ -16,9 +16,9 @@ from .utils import selector_ioloop_adapter
 
 SELECT_TYPE: str | None
 
-_OnCloseCallback = Callable[[base_connection.BaseConnection, Exception], None]
-_OnOpenCallback = Callable[[base_connection.BaseConnection], None]
-_OnOpenErrorCallback = Callable[[base_connection.BaseConnection, str | Exception], None]
+_OnCloseCallback = Callable[[base_connection.BaseConnection[IOLoop], Exception], None]
+_OnOpenCallback = Callable[[base_connection.BaseConnection[IOLoop]], None]
+_OnOpenErrorCallback = Callable[[base_connection.BaseConnection[IOLoop], str | Exception], None]
 
 class SelectConnection(base_connection.BaseConnection[IOLoop]):
     def __init__(

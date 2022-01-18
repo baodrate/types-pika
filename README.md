@@ -10,7 +10,7 @@ This package contains [type stubs](https://www.python.org/dev/peps/pep-0561/) to
 ## Installation
 
 ```bash
-pip install pika-stubs
+pip install types-pika
 ```
 
 That's all, run Mypy and it should be able to pick up these stubs.

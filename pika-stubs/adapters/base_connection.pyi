@@ -10,19 +10,15 @@ from .. import connection
 from .utils import connection_workflow
 from .utils import nbio_interface
 
-_OnCloseCallback = Callable[[BaseConnection, Exception], None]
-_OnOpenCallback = Callable[[BaseConnection], None]
-_OnOpenErrorCallback = Callable[[BaseConnection, str | Exception], None]
-
 _IOLoop = TypeVar("_IOLoop")
 
 class BaseConnection(Generic[_IOLoop], connection.Connection):
     def __init__(
         self,
         parameters: connection.Parameters | None,
-        on_open_callback: _OnOpenCallback | None,
-        on_open_error_callback: _OnOpenErrorCallback | None,
-        on_close_callback: _OnCloseCallback | None,
+        on_open_callback: Callable[[BaseConnection[_IOLoop]], None] | None,
+        on_open_error_callback: Callable[[BaseConnection[_IOLoop], str | Exception], None] | None,
+        on_close_callback: Callable[[BaseConnection[_IOLoop], Exception], None] | None,
         nbio: nbio_interface.AbstractIOServices,
         internal_connection_workflow: bool,
     ) -> None: ...
