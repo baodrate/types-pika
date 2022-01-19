@@ -6,6 +6,8 @@
 
 This package contains [type stubs](https://www.python.org/dev/peps/pep-0561/) to provide more precise static types and type inference for [pika](https://github.com/pika/pika), the RabbitMQ client library.
 
+An updated fork of [`pika-stubs`](https://github.com/hahow/pika-stubs), written by Chi-En Wu of Hahow
+
 
 ## Installation
 
