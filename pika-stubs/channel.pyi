@@ -3,7 +3,6 @@ from __future__ import annotations
 from collections.abc import Mapping
 from collections.abc import Sequence
 from typing import Any
-from typing import AnyStr
 from typing import Callable
 from typing import TypeVar
 from typing_extensions import Literal
@@ -74,7 +73,7 @@ class Channel:
     def basic_get(self, queue: str, callback: _OnBasicGetCallback, auto_ack: bool = ...) -> None: ...
     def basic_nack(self, delivery_tag: int = ..., multiple: bool = ..., requeue: bool = ...) -> None: ...
     def basic_publish(
-        self, exchange: str, routing_key: str, body: AnyStr, properties: spec.BasicProperties | None = ..., mandatory: bool = ...
+        self, exchange: str, routing_key: str, body: str | bytes, properties: spec.BasicProperties | None = ..., mandatory: bool = ...
     ) -> None: ...
     def basic_qos(
         self,
